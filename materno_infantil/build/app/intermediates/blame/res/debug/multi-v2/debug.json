@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/solomonkane/AndroidStudioProjects/materno_infantil/build/app/intermediates/res/merged/debug/values_values.arsc.flat",
+            "outputFile": "/home/solomonkane/AndroidStudioProjects/diariosaude/materno_infantil/build/app/intermediates/res/merged/debug/values_values.arsc.flat",
             "map": [
                 {
-                    "source": "/home/solomonkane/AndroidStudioProjects/materno_infantil/android/app/src/main/res/values/styles.xml",
+                    "source": "/home/solomonkane/AndroidStudioProjects/diariosaude/materno_infantil/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
