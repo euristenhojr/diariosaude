@@ -176,7 +176,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
+                  /*Padding(
                     padding: EdgeInsets.only(top: 0.0, bottom: 5.0),
                     child: Container(
                       height: 35.0,
@@ -191,7 +191,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                         color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
                       ),
                     ),
-                  ),
+                  ),*/
                   Padding(
                     padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
                     child:
