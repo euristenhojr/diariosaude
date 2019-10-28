@@ -91,7 +91,7 @@ class _escolhaAcoesState extends State<escolhaAcoes> {
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
                         child: Text(
-                          "Filho Miguel",
+                          "Filha Angelina",
                           style: TextStyle(color: Colors.white),
                           textAlign: TextAlign.left,
                         ),

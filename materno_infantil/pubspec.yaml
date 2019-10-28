@@ -20,9 +20,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  datetime_picker_formfield: ^0.4.2
+  #datetime_picker_formfield: ^0.4.2
   material_design_icons_flutter: ^3.2.4096
   table_calendar: ^2.0.1
+  datetime_picker_formfield: ^0.4.3
+
 
 
   flutter_localizations:
@@ -62,6 +64,7 @@ flutter:
     - images/google.png
     - images/personcadastro.png
     - images/sexo.png
+    - images/rosto1.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
