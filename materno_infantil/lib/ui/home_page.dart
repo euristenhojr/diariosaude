@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:materno_infantil/ui/tela_cadastrar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-
 import 'escolhaacoes_page.dart';
-
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,7 +16,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Diário Saúde", style: TextStyle(fontSize: 18.0),),
+          title: Text(
+            "Diário Saúde",
+            style: TextStyle(fontSize: 18.0),
+          ),
           backgroundColor: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
           actions: <Widget>[
             IconButton(icon: Icon(Icons.child_care), onPressed: () {})
@@ -128,9 +129,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => escolhaAcoes()
-                          )
-                      );
+                              builder: (context) => escolhaAcoes()));
                     },
                     child: Text("Entrar",
                         style: TextStyle(color: Colors.white, fontSize: 15.0)),
@@ -149,9 +148,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TelaCadastrar()
-                              )
-                          );
+                                  builder: (context) => TelaCadastrar()));
                         },
                         child: Text(
                           "Cadastrar",
@@ -170,8 +167,7 @@ class _HomePageState extends State<HomePage> {
                         onPressed: () {},
                         child: Text(
                           "Esqueci minha senha",
-                          style: TextStyle(
-                              fontSize: 10.0),
+                          style: TextStyle(fontSize: 10.0),
                         ),
                       ),
                     ),

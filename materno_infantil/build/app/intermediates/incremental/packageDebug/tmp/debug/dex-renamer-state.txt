@@ -1,4 +1,10 @@
-#Mon Oct 28 13:59:11 BRT 2019
-base.0=/home/solomonkane/AndroidStudioProjects/diariosaude/materno_infantil/build/app/intermediates/transforms/dexMerger/debug/0
+#Mon Dec 02 15:26:58 BRT 2019
+path.2=classes3.dex
+path.1=classes2.dex
 path.0=classes.dex
+renamed.2=classes3.dex
+renamed.1=classes2.dex
 renamed.0=classes.dex
+base.2=/home/julio/workspace/diariosaude/materno_infantil/build/app/intermediates/transforms/dexMerger/debug/0
+base.1=/home/julio/workspace/diariosaude/materno_infantil/build/app/intermediates/transforms/dexMerger/debug/0
+base.0=/home/julio/workspace/diariosaude/materno_infantil/build/app/intermediates/transforms/dexMerger/debug/0

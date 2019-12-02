@@ -19,6 +19,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  scoped_model: ^1.0.1
+  firebase_auth: ^0.15.0+1
+  cloud_firestore: ^0.12.10+2
 
   #datetime_picker_formfield: ^0.4.2
   material_design_icons_flutter: ^3.2.4096

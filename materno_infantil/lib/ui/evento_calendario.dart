@@ -6,7 +6,6 @@ import 'package:materno_infantil/ui/cadastrar_evento.dart';
 class EventoCalendario extends StatefulWidget {
   @override
   _EventoCalendarioState createState() => _EventoCalendarioState();
-
 }
 
 class _EventoCalendarioState extends State<EventoCalendario> {
@@ -33,7 +32,7 @@ class _EventoCalendarioState extends State<EventoCalendario> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-            onPressed: ( ) {
+            onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => CadastrarEvento()));
             },
@@ -67,23 +66,21 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                         titleTextStyle: TextStyle(fontSize: 14.0),
                       ),
                       events: _selectedDay,
-                      builders:
-                      CalendarBuilders(
-                          markersBuilder: (context, date, events, holidays) {
-                            return [
-                              Container(
-                                decoration: new BoxDecoration(
-                                  color: Color.fromARGB(0xFF, 0x45, 0x95, 0xBA),
-                                  shape: BoxShape.circle,
-                                ),
-                                margin: const EdgeInsets.all(2.0),
-                                width: 4,
-                                height: 4,
-                              )
-                            ];
-                          },
-                      )
-                      ,
+                      builders: CalendarBuilders(
+                        markersBuilder: (context, date, events, holidays) {
+                          return [
+                            Container(
+                              decoration: new BoxDecoration(
+                                color: Color.fromARGB(0xFF, 0x45, 0x95, 0xBA),
+                                shape: BoxShape.circle,
+                              ),
+                              margin: const EdgeInsets.all(2.0),
+                              width: 4,
+                              height: 4,
+                            )
+                          ];
+                        },
+                      ),
                       initialCalendarFormat: CalendarFormat.month,
                       onDaySelected: (date, events) {
                         print(date.toIso8601String());
@@ -108,22 +105,20 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                               maxRadius: 20.0,
                             )),
                         Padding(
-                          padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                          child:
-                            Container(
+                            padding: EdgeInsets.only(left: 10.0, top: 5.0),
+                            child: Container(
                               width: 180,
-                              child:
-                              Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     "Filha: Angelina",
-                                    style: TextStyle(
-                                        color: Colors.white),
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                   Text(
                                     "  Vacina  ",
-                                    style: TextStyle(color: Colors.white,
+                                    style: TextStyle(
+                                        color: Colors.white,
                                         backgroundColor: Colors.teal),
                                   ),
                                   Text(
@@ -132,8 +127,7 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                                   ),
                                 ],
                               ),
-                            )
-                        ),
+                            )),
                         Padding(
                           padding: EdgeInsets.only(left: 5.0),
                           child: Column(
@@ -197,111 +191,106 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                               maxRadius: 20.0,
                             )),
                         Padding(
-                          padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                          child:
-                            Container(
+                            padding: EdgeInsets.only(left: 10.0, top: 5.0),
+                            child: Container(
                               width: 180,
-                                child:
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Filha: Angelina",
-                                      style: TextStyle(
-                                          color: Colors.white),
-                                    ),
-                                    Text(
-                                      " Acompanhamento Médico ",
-                                      style: TextStyle(color: Colors.black,
-                                          backgroundColor: Colors.amber),
-                                    ),
-                                    Text(
-                                      "Fonoaudióloga",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                            )
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                    color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                    height: 60.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: CircleAvatar(
-                              backgroundImage: ExactAssetImage(
-                                'images/rosto1.jpg',
-                              ),
-                              minRadius: 15.0,
-                              maxRadius: 20.0,
-                            )),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                          child:
-                            Container(
-                              width: 180,
-                              child:
-                              Column(
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     "Filha: Angelina",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  Text(
+                                    " Acompanhamento Médico ",
                                     style: TextStyle(
-                                        color: Colors.white),
+                                        color: Colors.black,
+                                        backgroundColor: Colors.amber),
+                                  ),
+                                  Text(
+                                    "Fonoaudióloga",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.0),
+                                child: Container(
+                                  height: 5.0,
+                                  width: 5.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.0),
+                                child: Container(
+                                  height: 5.0,
+                                  width: 5.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 5.0),
+                                child: Container(
+                                  height: 5.0,
+                                  width: 5.0,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 5.0),
+                  child: Container(
+                    color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
+                    height: 60.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.0),
+                            child: CircleAvatar(
+                              backgroundImage: ExactAssetImage(
+                                'images/rosto1.jpg',
+                              ),
+                              minRadius: 15.0,
+                              maxRadius: 20.0,
+                            )),
+                        Padding(
+                            padding: EdgeInsets.only(left: 10.0, top: 5.0),
+                            child: Container(
+                              width: 180,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Filha: Angelina",
+                                    style: TextStyle(color: Colors.white),
                                   ),
                                   Text(
                                     " Rotina ",
-                                    style: TextStyle(color: Colors.white,
+                                    style: TextStyle(
+                                        color: Colors.white,
                                         backgroundColor: Colors.brown),
                                   ),
                                   Text(
@@ -310,8 +299,7 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                                   ),
                                 ],
                               ),
-                            )
-                        ),
+                            )),
                         Padding(
                           padding: EdgeInsets.only(left: 5.0),
                           child: Column(
@@ -370,7 +358,4 @@ class _EventoCalendarioState extends State<EventoCalendario> {
     DateTime(2019, 9, 22): ['Selected Day in the calendar!'],
     DateTime(2019, 9, 26): ['Selected Day in the calendar!'],
   };
-
 }
-
-

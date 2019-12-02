@@ -22,15 +22,15 @@ class _escolhaAcoesState extends State<escolhaAcoes> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add),
+            onPressed: () {},
+            child: Icon(Icons.add),
             backgroundColor: Color.fromARGB(0xFF, 0x1B, 0x30, 0xA1)
-          //backgroundColor: Color.fromARGB(0xFF, 0x32, 0x6B, 0x86),
-          //backgroundColor: Color.fromARGB(0xFF, 0x04, 0x29, 0x3B),
-          //backgroundColor: Color.fromARGB(0xFF, 0xA1, 0x3D, 0x1B),
-          //backgroundColor: Color.fromARGB(0xFF, 0x1B, 0x30, 0xA1),
-          //backgroundColor: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-        ),
+            //backgroundColor: Color.fromARGB(0xFF, 0x32, 0x6B, 0x86),
+            //backgroundColor: Color.fromARGB(0xFF, 0x04, 0x29, 0x3B),
+            //backgroundColor: Color.fromARGB(0xFF, 0xA1, 0x3D, 0x1B),
+            //backgroundColor: Color.fromARGB(0xFF, 0x1B, 0x30, 0xA1),
+            //backgroundColor: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
+            ),
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -154,55 +154,52 @@ class _escolhaAcoesState extends State<escolhaAcoes> {
                   ),
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child:
-                      GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EventoCalendario()
-                              )
-                          );
-                        },
-                          child:
-                          Column(
-                            children: <Widget>[
-                              Container(
-                                height: 80.0,
-                                width: 80.0,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                        style: BorderStyle.solid,
-                                        width: 2.0,
-                                        color:
-                                        Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
-                                child: SizedBox(
-                                  width: 14.0,
-                                  height: 14.0,
-                                  child: Icon(MdiIcons.heartPulse,
-                                      size: 50.0,
-                                      color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
-                                  /*Icon(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EventoCalendario()));
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 80.0,
+                            width: 80.0,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    style: BorderStyle.solid,
+                                    width: 2.0,
+                                    color: Color.fromARGB(
+                                        0xFF, 0x08, 0x4D, 0x6E))),
+                            child: SizedBox(
+                              width: 14.0,
+                              height: 14.0,
+                              child: Icon(MdiIcons.heartPulse,
+                                  size: 50.0,
+                                  color:
+                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
+                              /*Icon(
                               ,
                               color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
                               size: 50.0,
                             ),*/
-                                ),
-                              ),
-                              Container(
-                                height: 30.0,
-                                width: 80.0,
-                                padding: EdgeInsets.only(top: 3.0),
-                                child: Text(
-                                  "Vacina",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 9.0),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
+                          Container(
+                            height: 30.0,
+                            width: 80.0,
+                            padding: EdgeInsets.only(top: 3.0),
+                            child: Text(
+                              "Vacina",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 9.0),
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
                   ),
                 ],
               ),

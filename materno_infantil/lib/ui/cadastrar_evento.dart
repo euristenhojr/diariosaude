@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 //https://pub.dev/packages/datetime_picker_formfield#-example-tab-
-
 
 class CadastrarEvento extends StatefulWidget {
   @override
@@ -212,7 +210,8 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
                     ),
                   ),*/
                   Padding(
-                    padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, bottom: 5.0, top: 20.0),
                     child: Container(
                       height: 35,
                       width: 50,
@@ -224,7 +223,8 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 20.0),
+                    padding:
+                        EdgeInsets.only(left: 20.0, bottom: 5.0, top: 20.0),
                     child: Container(
                       height: 35,
                       width: 50,
