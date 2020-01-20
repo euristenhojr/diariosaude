@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "467177908822",
+    "firebase_url": "https://igordiariosaude.firebaseio.com",
+    "project_id": "igordiariosaude",
+    "storage_bucket": "igordiariosaude.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467177908822:android:5d96979a2bc20135f0e9f7",
+        "android_client_info": {
+          "package_name": "com.app.materno_infantil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467177908822-hv9odjhq5bqm7btbp85nhtl860603ccq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.materno_infantil",
+            "certificate_hash": "c99ac398866f7f9ef21f022f985522878103ec00"
+          }
+        },
+        {
+          "client_id": "467177908822-8js0kf0l7gu08b0uutejr612f0f21p4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2lTsYMdUUIb1m3KRaBA60yrqYJvx7fQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467177908822-8js0kf0l7gu08b0uutejr612f0f21p4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

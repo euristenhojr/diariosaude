@@ -24,7 +24,7 @@ dependencies:
   #datetime_picker_formfield: ^0.4.2
   material_design_icons_flutter: ^3.2.4096
   table_calendar: ^2.0.1
-  datetime_picker_formfield: ^0.4.3
+  datetime_picker_formfield: ^1.0.0
 
 
 
@@ -41,6 +41,8 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   firebase_auth: ^0.15.0+1
   scoped_model: ^1.0.1
+  bloc_pattern: ^2.5.1
+  rxdart: ^0.22.6
 
 
 dev_dependencies:

@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:materno_infantil/ui/escolhaacoes_page.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'dart:async';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
+
+enum LoginStateModel{IDLE, LOADING, SUCCESS, FAIL}
 
 class UserModel extends Model{
 
@@ -18,7 +20,20 @@ class UserModel extends Model{
   Map<String, dynamic>  userData = Map();
   final facebookLogin = FacebookLogin();
 
-  bool isLoading = false;
+  final _stateController = BehaviorSubject<LoginStateModel>();
+  Stream<LoginStateModel> get outState => _stateController.stream;
+  StreamSubscription _streamSubscription;
+
+  UserModel(){
+    _streamSubscription = auth.onAuthStateChanged.listen((user){
+      if(user != null){
+        _stateController.add(LoginStateModel.SUCCESS);
+      }else{
+        _stateController.add(LoginStateModel.IDLE);
+      }
+    });
+  }
+
 
 /*
   Future signUp({@required String email, @required String password}) async {
@@ -33,22 +48,19 @@ class UserModel extends Model{
 
 
   void signOut() async{
+    _stateController.add(LoginStateModel.LOADING);
     await auth.signOut();
     firebaseUser = null;
     userData = Map();
+    _stateController.add(LoginStateModel.IDLE);
     notifyListeners();
+
   }
 
-  bool isLoggedIn(){
-    return firebaseUser != null;
-  }
-
-  /*void mudarTela(){
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => escolhaAcoes()));
-  }*/
 
   Future<Null> signInGoogle() async {
-
+    _stateController.add(LoginStateModel.LOADING);
+    notifyListeners();
     GoogleSignInAccount user = googleSignIn.currentUser;
     if(user == null) {
       user = await googleSignIn.signInSilently();
@@ -60,37 +72,55 @@ class UserModel extends Model{
           .authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
         idToken: credentialsGoogle.idToken, accessToken: credentialsGoogle.accessToken);
-    final AuthResult authResult = await auth.signInWithCredential(credential);
-    firebaseUser = authResult.user;
+    await auth.signInWithCredential(credential).then((user){
+      firebaseUser = user.user;
+      _stateController.add(LoginStateModel.SUCCESS);
+      notifyListeners();
+    }).catchError((e){
+      _stateController.add(LoginStateModel.FAIL);
+      notifyListeners();
+    });
+
 
   }
 
   Future signInFacebook() async {
-
+    _stateController.add(LoginStateModel.LOADING);
+    notifyListeners();
     final result = await facebookLogin.logIn(['email']);
-    print(result.status.toString());
 
     if(result.status == FacebookLoginStatus.loggedIn){
       final AuthCredential credential = FacebookAuthProvider.getCredential(accessToken: result.accessToken.token);
-      final AuthResult authResult = await auth.signInWithCredential(credential);
-      firebaseUser = authResult.user;
+      await auth.signInWithCredential(credential).then((user){
+        firebaseUser = user.user;
+        _stateController.add(LoginStateModel.SUCCESS);
+        notifyListeners();
+      }).catchError((e){
+        _stateController.add(LoginStateModel.FAIL);
+        notifyListeners();
+      });
+
     }
   }
 //email and password
   Future signInWithEmailAndPass({@required String email, @required String password}) async {
-    isLoading = true;
+    _stateController.add(LoginStateModel.LOADING);
     notifyListeners();
-
-    final AuthResult authResult = await auth.signInWithEmailAndPassword(email: email, password: password).catchError((e){
-      isLoading = false;
+    await auth.signInWithEmailAndPassword(email: email, password: password).then((auth){
+      firebaseUser = auth.user;
+      _stateController.add(LoginStateModel.SUCCESS);
+      notifyListeners();
+    }).catchError((e){
+      _stateController.add(LoginStateModel.FAIL);
       notifyListeners();
     });
 
-    if(authResult != null){
-      firebaseUser = authResult.user;
-    }
-    isLoading = false;
-    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _stateController.close();
+    _streamSubscription.cancel();
 
   }
 }
