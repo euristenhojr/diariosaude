@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:materno_infantil/models/user_model.dart';
+import 'package:materno_infantil/ui/criar_filhos.dart';
 import 'package:materno_infantil/ui/tela_cadastrar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
       switch(state){
         case LoginStateModel.SUCCESS:
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => escolhaAcoes()
+                  builder: (context) => CriarFilho()
               )
           );
           break;

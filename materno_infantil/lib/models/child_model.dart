@@ -15,9 +15,7 @@ class ChildModel extends Model{
         _loadChild();
       }
     });
-
   }
-
 
   Future<void> addChildData(ChildData f) async {
     listChildren.add(f);

@@ -3,11 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:materno_infantil/datas/child_data.dart';
 import 'package:materno_infantil/models/child_model.dart';
-
 import 'package:materno_infantil/models/user_model.dart';
 import 'package:materno_infantil/tile/child_tile.dart';
 import 'package:scoped_model/scoped_model.dart';
-
 import 'home_page.dart';
 
 class CriarFilho extends StatefulWidget {

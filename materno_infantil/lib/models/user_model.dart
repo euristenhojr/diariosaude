@@ -28,6 +28,7 @@ class UserModel extends Model{
     _streamSubscription = auth.onAuthStateChanged.listen((user){
       if(user != null){
         _stateController.add(LoginStateModel.SUCCESS);
+        firebaseUser = user;
       }else{
         _stateController.add(LoginStateModel.IDLE);
       }

@@ -1,4 +1,4 @@
-#Mon Jan 20 16:21:46 BRT 2020
+#Sun Jan 26 16:53:04 BRT 2020
 base.2=/Users/igor/AndroidStudioProjects/diariosaude/materno_infantil/build/app/intermediates/transforms/dexMerger/debug/3
 base.1=/Users/igor/AndroidStudioProjects/diariosaude/materno_infantil/build/app/intermediates/transforms/dexMerger/debug/2
 base.0=/Users/igor/AndroidStudioProjects/diariosaude/materno_infantil/build/app/intermediates/transforms/dexMerger/debug/5

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:materno_infantil/models/child_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
 import 'package:materno_infantil/ui/escolhaacoes_page.dart';
 import 'package:materno_infantil/ui/home_page.dart';
@@ -15,15 +16,21 @@ class MyApp extends StatelessWidget{
     // TODO: implement build
     return ScopedModel <UserModel>(
       model: UserModel(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: HomePage(),
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate
-        ],
-        supportedLocales: [const Locale('pt', 'BR')],
-
+      child: ScopedModelDescendant<UserModel>(
+        builder: (context, child, model){
+          return ScopedModel<ChildModel>(
+            model: ChildModel(model),
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: HomePage(),
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate
+              ],
+              supportedLocales: [const Locale('pt', 'BR')],
+            ),
+          );
+        }
       ),
     );
   }
