@@ -1,24 +1,36 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:materno_infantil/ui/tela_cadastrar.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Diário Saúde'),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(0, 91, 161, 1),
       ),
       body: Form(
+        key: _formKey,
         child: ListView(
           padding: EdgeInsets.all(15.0),
           children: <Widget>[
             Column(
               children: <Widget>[
                 Icon(
-                  Icons.person,
+                  Icons.person_pin,
                   size: 100.0,
                 ),
                 SizedBox(
@@ -66,6 +78,14 @@ class HomePage extends StatelessWidget {
               height: 16.0,
             ),
             TextFormField(
+              controller: _emailController,
+              validator: (email) {
+                if (email.isEmpty || !email.contains('@')) {
+                  return 'E-mail inválido';
+                }
+
+                return null;
+              },
               decoration: InputDecoration(
                 hintText: 'E-mail',
               ),
@@ -75,10 +95,18 @@ class HomePage extends StatelessWidget {
               height: 16.0,
             ),
             TextFormField(
+              controller: _passController,
+              obscureText: true,
+              validator: (password) {
+                if (password.isEmpty || password.length < 8) {
+                  return 'Senha inválida';
+                }
+
+                return null;
+              },
               decoration: InputDecoration(
                 hintText: 'Senha',
               ),
-              obscureText: true,
             ),
             SizedBox(
               height: 16.0,
@@ -118,8 +146,10 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               textColor: Colors.white,
-              color: Theme.of(context).primaryColor,
-              onPressed: () {},
+              color: Color.fromRGBO(0, 0, 153, 1),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {}
+              },
             ),
             SizedBox(
               height: 16.0,
@@ -127,7 +157,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-//      floatingActionButton: ,
     );
   }
 }

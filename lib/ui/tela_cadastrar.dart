@@ -11,15 +11,13 @@ class TelaCadastrar extends StatefulWidget {
 }
 
 class _TelaCadastrarState extends State<TelaCadastrar> {
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   final _dateNasciController = TextEditingController();
-
-  final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  String nome = "Cadastrar Usuário";
 
   String typeBlood;
 
@@ -27,9 +25,11 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
 
   List<DropdownMenuItem<String>> listDrop = [];
 
-  void loadData() {
-    listDrop = [];
+  _TelaCadastrarState() {
+    loadData();
+  }
 
+  void loadData() {
     listDrop.add(new DropdownMenuItem(
       child: new Text("Tipo A+"),
       value: 'tipoA+',
@@ -66,7 +66,6 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
 
   @override
   Widget build(BuildContext context) {
-    loadData();
     return ScopedModelDescendant<UserModel>(
       builder: (context, child, model) {
         if (model.isLoading) {
@@ -75,195 +74,186 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
           );
         }
 
-        return Form(
+        return Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+            title: Text('Cadastrar'),
+            centerTitle: true,
+            backgroundColor: Color.fromRGBO(0, 91, 161, 1),
+          ),
+          body: Form(
             key: _formKey,
-            child: Scaffold(
-              key: _scaffoldKey,
-              appBar: AppBar(
-                title: Text(
-                  nome ?? "Cadastrar Usuário",
-                  style: TextStyle(fontSize: 14.0),
+            child: ListView(
+              padding: EdgeInsets.all(16.0),
+              children: <Widget>[
+                Container(
+                  width: 70.0,
+                  height: 70.0,
+                  child: Icon(Icons.person_add, size: 100,)
                 ),
-                backgroundColor: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                actions: <Widget>[
-                  IconButton(icon: Icon(Icons.child_care), onPressed: () {})
-                ],
-              ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  Map<String, dynamic> userData = {
-                    "displayName": _nameController.text,
-                    "email": _emailController.text,
-                    "date_nasc": _dateNasciController.text,
-                    "type_blood": typeBlood
-                  };
+                SizedBox(
+                  height: 35.0,
+                ),
+                TextFormField(
+                    controller: _nameController,
+                    style: TextStyle(fontSize: 14.0),
+                    decoration: InputDecoration(
+                        hintText: "Nome",
+                        suffixIcon: Icon(
+                          Icons.perm_contact_calendar,
+                          size: 20.0,
+                        )),
+                    validator: (text) {
+                      print(text.isEmpty);
+                      if (text.isEmpty) {
+                        return "O campo Nome é obrigatório";
+                      }
 
-                  model.signUp(
-                      userData: userData,
-                      pass: _passController.text,
-                      onSuccess: _onSuccess,
-                      onFailure: _onFailure);
-                },
-                child: Icon(Icons.save),
-                backgroundColor: Color.fromARGB(0xFF, 0x1B, 0x30, 0xA1),
-              ),
-              backgroundColor: Colors.white,
-              body: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                      return null;
+                    }),
+                SizedBox(
+                  height: 16.0,
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  style: TextStyle(fontSize: 14.0),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (email) {
+                    if (email.isEmpty) {
+                      return 'O campo E-mail é obrigatório';
+                    }
+
+                    if (!email.contains('@')) {
+                      return 'E-mail inválido';
+                    }
+
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: "E-mail",
+                      suffixIcon: Icon(
+                        Icons.email,
+                        size: 20.0,
+                      )),
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                TextFormField(
+                  controller: _passController,
+                  style: TextStyle(fontSize: 14.0),
+                  obscureText: true,
+                  validator: (password) {
+                    if (password.isEmpty) {
+                      return 'O campo Senha é obrigatório';
+                    }
+
+                    if (password.length < 8) {
+                      return 'O campo Senha precisa ter mais de 8 caracteres';
+                    }
+
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: "Senha",
+                      suffixIcon: Icon(
+                        Icons.lock_outline,
+                        size: 20.0,
+                      )),
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                DateTimeField(
+                  controller: _dateNasciController,
+                  format: format,
+                  validator: (date) {
+                    if (date == null) {
+                      return 'O campo Data de Nascimento é obrigatória';
+                    }
+
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: "Data de Nascimento",
+                      suffixIcon: Icon(Icons.date_range)),
+                  style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                  onShowPicker: (context, currentValue) {
+                    return showDatePicker(
+                      context: context,
+                      firstDate: DateTime(1900),
+                      initialDate: currentValue ?? DateTime.now(),
+                      lastDate: DateTime(2100),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    value: typeBlood,
+                    items: listDrop,
+                    hint: Text(
+                      "Tipo Sanguíneo",
+                      style: TextStyle(fontSize: 14.0),
+                    ),
+                    elevation: 0,
+                    onChanged: (value) {
+                      setState(() {
+                        typeBlood = value;
+                      });
+                    },
+                    style: TextStyle(fontSize: 14.0, color: Colors.black),
+                  ),
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                      child: GestureDetector(
-                        child: Container(
-                          width: 60.0,
-                          height: 60.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: AssetImage('images/personcadastro.png')),
-                          ),
-                        ),
+                    FlatButton(
+                      color: Color.fromRGBO(0, 91, 161, 1),
+                      child: Icon(
+                        Icons.photo_camera,
+                        color: Colors.white,
                       ),
+                      onPressed: () {},
                     ),
-                    Container(
-                      height: 30.0,
-                      child: TextFormField(
-                          controller: _nameController,
-                          style: TextStyle(fontSize: 14.0),
-                          decoration: InputDecoration(
-                              hintText: "Nome",
-                              suffixIcon: Icon(
-                                Icons.perm_contact_calendar,
-                                size: 20.0,
-                              )),
-                          validator: (text) {
-                            print(text.isEmpty);
-                            if (text.isEmpty) {
-                              return "Nome inválido";
-                            }
-
-                            return null;
-                          }),
+                    SizedBox(
+                      width: 10.0,
                     ),
-                    Container(
-                        height: 50.0,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                          child: TextField(
-                            controller: _emailController,
-                            style: TextStyle(fontSize: 14.0),
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                hintText: "E-mail",
-                                suffixIcon: Icon(
-                                  Icons.email,
-                                  size: 20.0,
-                                )),
-                          ),
-                        )),
-                    Container(
-                        height: 50.0,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                          child: TextField(
-                            controller: _passController,
-                            style: TextStyle(fontSize: 14.0),
-                            obscureText: true,
-                            decoration: InputDecoration(
-                                hintText: "Senha",
-                                suffixIcon: Icon(
-                                  Icons.lock_outline,
-                                  size: 20.0,
-                                )),
-                          ),
-                        )),
-                    Container(
-                      height: 30.0,
-                      child: DateTimeField(
-                        controller: _dateNasciController,
-                        format: format,
-                        decoration:
-                            InputDecoration(hintText: "Data de Nascimento"),
-                        style: TextStyle(fontSize: 14.0, color: Colors.grey),
-                        onShowPicker: (context, currentValue) {
-                          return showDatePicker(
-                            context: context,
-                            firstDate: DateTime(1900),
-                            initialDate: currentValue ?? DateTime.now(),
-                            lastDate: DateTime(2100),
-                          );
-                        },
-                      ),
-                    ),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        value: typeBlood,
-                        items: listDrop,
-                        hint: Text(
-                          "Tipo Sanguíneo",
-                          style: TextStyle(fontSize: 14.0),
-                        ),
-                        elevation: 0,
-                        onChanged: (value) {
-                          setState(() {
-                            typeBlood = value;
-                          });
-                        },
-                        style: TextStyle(fontSize: 14.0, color: Colors.black),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        /*Padding(
-                    padding: EdgeInsets.only(top: 0.0, bottom: 5.0),
-                    child: Container(
-                      height: 35.0,
-                      width: 60.0,
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => HomePage()));
-                        },
-                        child: Text("Criar",
-                            style: TextStyle(color: Colors.white, fontSize: 12.0)),
-                        color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                      ),
-                    ),
-                  ),*/
-                        Padding(
-                          padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-                          child: Container(
-                            height: 35,
-                            width: 50,
-                            child: Icon(
-                              Icons.photo_camera,
-                              color: Colors.white,
-                            ),
-                            color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 20.0, bottom: 5.0),
-                          child: Container(
-                            height: 35,
-                            width: 50,
-                            child: Icon(
-                              Icons.attach_file,
-                              color: Colors.white,
-                            ),
-                            color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                          ),
-                        )
-                      ],
+                    FlatButton(
+                      color: Color.fromRGBO(0, 91, 161, 1),
+                      child: Icon(Icons.attach_file, color: Colors.white),
+                      onPressed: () {},
                     )
                   ],
-                ),
-              ),
-            ));
+                )
+              ],
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              if (_formKey.currentState.validate()) {}
+//              Map<String, dynamic> userData = {
+//                "name": _nameController.text,
+//                "email": _emailController.text,
+//                "date_nasc": _dateNasciController.text,
+//                "type_blood": typeBlood
+//              };
+//
+//              model.signUp(
+//                  userData: userData,
+//                  pass: _passController.text,
+//                  onSuccess: _onSuccess,
+//                  onFailure: _onFailure);
+            },
+            child: Icon(Icons.save),
+            backgroundColor: Color.fromRGBO(0, 0, 153, 1),
+          ),
+        );
       },
     );
   }
