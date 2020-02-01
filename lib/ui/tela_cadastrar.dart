@@ -95,7 +95,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
               floatingActionButton: FloatingActionButton(
                 onPressed: () {
                   Map<String, dynamic> userData = {
-                    "name": _nameController.text,
+                    "displayName": _nameController.text,
                     "email": _emailController.text,
                     "date_nasc": _dateNasciController.text,
                     "type_blood": typeBlood

@@ -11,11 +11,11 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 enum LoginStateModel { IDLE, LOADING, SUCCESS, FAIL }
 
 class UserModel extends Model {
-  GoogleSignIn googleSignIn = GoogleSignIn();
-  FirebaseAuth auth = FirebaseAuth.instance;
+  final googleSignIn = GoogleSignIn();
+  final auth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
   Map<String, dynamic> userData = Map();
-  FacebookLogin facebookLogin = FacebookLogin();
+  final facebookLogin = FacebookLogin();
 
   bool isLoading = false;
 
