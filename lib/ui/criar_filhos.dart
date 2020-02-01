@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:materno_infantil/datas/child_data.dart';
@@ -9,14 +8,11 @@ import 'package:scoped_model/scoped_model.dart';
 import 'home_page.dart';
 
 class CriarFilho extends StatefulWidget {
-
-
   @override
   _State createState() => _State();
 }
 
 class _State extends State<CriarFilho> {
-
   final _nameController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _userModel = UserModel();
@@ -24,20 +20,16 @@ class _State extends State<CriarFilho> {
   @override
   void initState() {
     super.initState();
-    _userModel.outState.listen((state){
-      switch(state){
+    _userModel.outState.listen((state) {
+      switch (state) {
         case LoginStateModel.FAIL:
           break;
         case LoginStateModel.IDLE:
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => HomePage()
-          )
-          );
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => HomePage()));
           break;
         case LoginStateModel.LOADING:
         case LoginStateModel.SUCCESS:
-
-
       }
     });
   }
@@ -102,59 +94,58 @@ class _State extends State<CriarFilho> {
             child: ScopedModelDescendant<ChildModel>(
                 builder: (context, child, modelChild) {
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Adicione a filho(a) a ser cuidado:",
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Adicione a filho(a) a ser cuidado:",
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Container(
-                    child: TextField(
-                      controller: _nameController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          labelText: "Digite o nome do filho(a)",
-                          suffixIcon: IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              print(model.firebaseUser);
-                              ChildData childData = ChildData();
-                              childData.nome = _nameController.text;
-                              childData.userId = model.firebaseUser.uid;
-
-                              int tamanho = modelChild.listChildren.length;
-
-                              modelChild.addChildData(childData);
-
-                              if(tamanho != modelChild.listChildren.length){
-                                _onSucess();
-                                WidgetsBinding.instance.addPostFrameCallback(
-                                        (_) => _nameController.clear());
-                              }
-
-                            },
-                          ),
-                          border: OutlineInputBorder(),
-                          labelStyle: TextStyle(color: Colors.black)),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black, fontSize: 16.0),
+                    SizedBox(
+                      height: 10.0,
                     ),
-                  ),
-                  Column(
+                    Container(
+                      child: TextField(
+                        controller: _nameController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            labelText: "Digite o nome do filho(a)",
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                print(model.firebaseUser);
+                                ChildData childData = ChildData();
+                                childData.nome = _nameController.text;
+                                childData.userId = model.firebaseUser.uid;
+
+                                int tamanho = modelChild.listChildren.length;
+
+                                modelChild.addChildData(childData);
+
+                                if (tamanho != modelChild.listChildren.length) {
+                                  _onSucess();
+                                  WidgetsBinding.instance.addPostFrameCallback(
+                                      (_) => _nameController.clear());
+                                }
+                              },
+                            ),
+                            border: OutlineInputBorder(),
+                            labelStyle: TextStyle(color: Colors.black)),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black, fontSize: 16.0),
+                      ),
+                    ),
+                    Column(
                       children: modelChild.listChildren.map((child) {
                         return Card(
-                            margin: EdgeInsets.symmetric(horizontal: 0.0, vertical: 4.0),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 0.0, vertical: 4.0),
                             child: ChildTile(child));
                       }).toList(),
                     ),
-                  ]
-              );
+                  ]);
             }),
           ),
         ]),
@@ -163,11 +154,10 @@ class _State extends State<CriarFilho> {
   }
 
   void _onSucess() {
-    _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text("Filho Criado com Sucesso!"),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 1),
-        )
-    );
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("Filho Criado com Sucesso!"),
+      backgroundColor: Colors.green,
+      duration: Duration(seconds: 1),
+    ));
   }
 }
