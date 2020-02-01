@@ -11,21 +11,23 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 enum LoginStateModel { IDLE, LOADING, SUCCESS, FAIL }
 
 class UserModel extends Model {
-  final googleSignIn = GoogleSignIn();
-  final auth = FirebaseAuth.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
+  GoogleSignIn googleSignIn = GoogleSignIn();
+  static final FacebookLogin facebookLogin = new FacebookLogin();
   Map<String, dynamic> userData = Map();
-  final facebookLogin = FacebookLogin();
 
   bool isLoading = false;
 
   final _stateController = BehaviorSubject<LoginStateModel>();
+
   Stream<LoginStateModel> get outState => _stateController.stream;
   StreamSubscription _streamSubscription;
 
   UserModel() {
     _streamSubscription = auth.onAuthStateChanged.listen((user) {
       if (user != null) {
+        firebaseUser = user;
         _stateController.add(LoginStateModel.SUCCESS);
       } else {
         _stateController.add(LoginStateModel.IDLE);
@@ -108,9 +110,24 @@ class UserModel extends Model {
   }
 
   Future signInFacebook() async {
-    _stateController.add(LoginStateModel.LOADING);
-    notifyListeners();
-    final result = await facebookLogin.logIn(['email']);
+    // _stateController.add(LoginStateModel.LOADING);
+    // notifyListeners();
+    final FacebookLoginResult result = await facebookLogin.logIn(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        // _showMessage('');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.');
+        // _showMessage('Something went wrong with the login process.\n'
+        // 'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
 
     if (result.status == FacebookLoginStatus.loggedIn) {
       final AuthCredential credential = FacebookAuthProvider.getCredential(

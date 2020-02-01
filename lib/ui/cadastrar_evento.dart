@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-//https://pub.dev/packages/datetime_picker_formfield#-example-tab-
 
 
 class CadastrarEvento extends StatefulWidget {
@@ -12,7 +10,7 @@ class CadastrarEvento extends StatefulWidget {
 class _CadastrarEventoState extends State<CadastrarEvento> {
   String nome = "Cadastrar Evento";
 
-  String selecionado = null;
+  String selecionado;
 
   final format = DateFormat("dd-MM-yyyy");
 

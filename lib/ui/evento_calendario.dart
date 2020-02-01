@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:materno_infantil/ui/cadastrar_evento.dart';
 

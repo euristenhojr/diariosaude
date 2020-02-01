@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:materno_infantil/models/user_model.dart';
-// import 'package:materno_infantil/ui/home_page.dart';
-// import 'package:async/async.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:materno_infantil/ui/home_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TelaCadastrar extends StatefulWidget {
@@ -24,7 +21,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
 
   String nome = "Cadastrar Usuário";
 
-  String typeBlood = null;
+  String typeBlood;
 
   final format = DateFormat("dd-MM-yyyy");
 
