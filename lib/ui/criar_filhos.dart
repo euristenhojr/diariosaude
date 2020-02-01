@@ -16,6 +16,7 @@ class _State extends State<CriarFilho> {
   final _nameController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _userModel = UserModel();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -73,9 +74,9 @@ class _State extends State<CriarFilho> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(model.firebaseUser != null
-                            ? model.firebaseUser.photoUrl
-                            : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
+                        image: NetworkImage(//model.firebaseUser != null
+                            //? model.firebaseUser.photoUrl
+                             "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                       )),
                 ),
                 SizedBox(
@@ -89,64 +90,77 @@ class _State extends State<CriarFilho> {
           SizedBox(
             height: 20.0,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ScopedModelDescendant<ChildModel>(
-                builder: (context, child, modelChild) {
-              return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Adicione a filho(a) a ser cuidado:",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ScopedModelDescendant<ChildModel>(
+                  builder: (context, child, modelChild) {
+                return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Adicione a filho(a) a ser cuidado:",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Container(
-                      child: TextField(
-                        controller: _nameController,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            labelText: "Digite o nome do filho(a)",
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                print(model.firebaseUser);
-                                ChildData childData = ChildData();
-                                childData.nome = _nameController.text;
-                                childData.userId = model.firebaseUser.uid;
-
-                                int tamanho = modelChild.listChildren.length;
-
-                                modelChild.addChildData(childData);
-
-                                if (tamanho != modelChild.listChildren.length) {
-                                  _onSucess();
-                                  WidgetsBinding.instance.addPostFrameCallback(
-                                      (_) => _nameController.clear());
-                                }
-                              },
-                            ),
-                            border: OutlineInputBorder(),
-                            labelStyle: TextStyle(color: Colors.black)),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black, fontSize: 16.0),
+                      SizedBox(
+                        height: 10.0,
                       ),
-                    ),
-                    Column(
-                      children: modelChild.listChildren.map((child) {
-                        return Card(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 0.0, vertical: 4.0),
-                            child: ChildTile(child));
-                      }).toList(),
-                    ),
-                  ]);
-            }),
+                      Container(
+                        child: TextFormField(
+                          controller: _nameController,
+                          keyboardType: TextInputType.text,
+                          validator: (name){
+                            if(name.isEmpty){
+                              return "Digite o nome do Filho(a)!";
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              labelText: "Digite o nome do filho(a)",
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  if(_formKey.currentState.validate()) {
+                                    ChildData childData = ChildData();
+                                    childData.nome = _nameController.text;
+                                    childData.userId = model.firebaseUser.uid;
+
+                                    int tamanho = modelChild.listChildren
+                                        .length;
+
+                                    modelChild.addChildData(childData);
+
+                                    if (tamanho !=
+                                        modelChild.listChildren.length) {
+                                      _onSucess();
+                                      WidgetsBinding.instance
+                                          .addPostFrameCallback(
+                                              (_) => _nameController.clear());
+                                    }
+                                  }
+                                },
+                              ),
+                              border: OutlineInputBorder(),
+                              labelStyle: TextStyle(color: Colors.black)),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.black, fontSize: 16.0),
+                        ),
+                      ),
+                      Column(
+                        children: modelChild.listChildren.map((child) {
+                          return Card(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 0.0, vertical: 4.0),
+                              child: ChildTile(child));
+                        }).toList(),
+                      ),
+                    ]);
+              }),
+            ),
           ),
         ]),
       );
