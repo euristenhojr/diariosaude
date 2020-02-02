@@ -11,26 +11,36 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 enum LoginStateModel { IDLE, LOADING, SUCCESS, FAIL }
 
 class UserModel extends Model {
-  GoogleSignIn googleSignIn = GoogleSignIn();
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
+  GoogleSignIn googleSignIn = GoogleSignIn();
+  static final FacebookLogin facebookLogin = new FacebookLogin();
   Map<String, dynamic> userData = Map();
-  FacebookLogin facebookLogin = FacebookLogin();
 
   bool isLoading = false;
 
   final _stateController = BehaviorSubject<LoginStateModel>();
+
   Stream<LoginStateModel> get outState => _stateController.stream;
   StreamSubscription _streamSubscription;
 
   UserModel() {
     _streamSubscription = auth.onAuthStateChanged.listen((user) {
       if (user != null) {
+        firebaseUser = user;
         _stateController.add(LoginStateModel.SUCCESS);
+        notifyListeners();
       } else {
         _stateController.add(LoginStateModel.IDLE);
       }
     });
+  }
+
+  @override
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+
+    _loadCurrentUser();
   }
 
   void signUp(
@@ -83,9 +93,7 @@ class UserModel extends Model {
   }
 
   Future<Null> signInGoogle() async {
-    _stateController.add(LoginStateModel.LOADING);
-    notifyListeners();
-    GoogleSignInAccount user = googleSignIn.currentUser;
+    GoogleSignInAccount user = await googleSignIn.signIn();
     if (user == null) {
       user = await googleSignIn.signInSilently();
     }
@@ -108,9 +116,24 @@ class UserModel extends Model {
   }
 
   Future signInFacebook() async {
-    _stateController.add(LoginStateModel.LOADING);
-    notifyListeners();
-    final result = await facebookLogin.logIn(['email']);
+    // _stateController.add(LoginStateModel.LOADING);
+    // notifyListeners();
+    final FacebookLoginResult result = await facebookLogin.logIn(['email']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        // _showMessage('');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.');
+        // _showMessage('Something went wrong with the login process.\n'
+        // 'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
 
     if (result.status == FacebookLoginStatus.loggedIn) {
       final AuthCredential credential = FacebookAuthProvider.getCredential(
@@ -128,18 +151,26 @@ class UserModel extends Model {
 
 //email and password
   Future signInWithEmailAndPass(
-      {@required String email, @required String password}) async {
+      {@required String email,
+      @required String password,
+      @required VoidCallback onSuccess,
+      @required VoidCallback onFailure}) async {
     _stateController.add(LoginStateModel.LOADING);
+    isLoading = true;
     notifyListeners();
     await auth
         .signInWithEmailAndPassword(email: email, password: password)
-        .then((auth) {
+        .then((auth) async {
       firebaseUser = auth.user;
+      await _loadCurrentUser();
+
       _stateController.add(LoginStateModel.SUCCESS);
       notifyListeners();
+      onSuccess();
     }).catchError((e) {
       _stateController.add(LoginStateModel.FAIL);
       notifyListeners();
+      onFailure();
     });
   }
 
@@ -154,7 +185,7 @@ class UserModel extends Model {
       firebaseUser = await auth.currentUser();
     }
 
-    if (firebaseUser != null && userData["name"] == null) {
+    if (firebaseUser != null && userData["displayName"] == null) {
       DocumentSnapshot docUser = await Firestore.instance
           .collection("users")
           .document(firebaseUser.uid)
