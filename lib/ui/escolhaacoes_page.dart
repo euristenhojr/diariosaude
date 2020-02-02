@@ -46,8 +46,8 @@ class EscolhaAcoes extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(model.firebaseUser != null
-                            ? model.firebaseUser.photoUrl
+                        image: NetworkImage(model.userData["photoUrl"] != null
+                            ? model.userData["photoUrl"]
                             : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                       )),
                 ),
@@ -57,7 +57,7 @@ class EscolhaAcoes extends StatelessWidget {
                 child: Container(
                   height: 17.0,
                   child: Text(
-                    "${model.firebaseUser != null ? model.firebaseUser.displayName : ""}",
+                    "${model.userData != null ? model.userData["displayName"] : ""}",
                     textAlign: TextAlign.center,
                   ),
                 ),

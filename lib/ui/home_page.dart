@@ -21,19 +21,19 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _userModel.outState.listen((state){
-      switch(state){
+    _userModel.outState.listen((state) {
+      switch (state) {
         case LoginStateModel.SUCCESS:
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => CriarFilho()
-          )
-          );
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => CriarFilho()));
           break;
         case LoginStateModel.FAIL:
-          showDialog(context: context, builder: (context) => AlertDialog(
-            title: Text("Erro!"),
-            content: Text("E-mail ou Senha Incorretos"),
-          ));
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    title: Text("Erro!"),
+                    content: Text("E-mail ou Senha Incorretos"),
+                  ));
           break;
         case LoginStateModel.IDLE:
         case LoginStateModel.LOADING:
@@ -50,25 +50,27 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<LoginStateModel>(
-      stream: _userModel.outState,
-      builder: (context, snapshot) {
-        switch(snapshot.data){
-          case LoginStateModel.LOADING:
-            return Center(child: CircularProgressIndicator(),);
-          case LoginStateModel.IDLE:
-          case LoginStateModel.SUCCESS:
-          case LoginStateModel.FAIL:
-        }
-        return Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBar(
-            title: Text('Diário Saúde'),
-            centerTitle: true,
-            backgroundColor: Color.fromRGBO(0, 91, 161, 1),
-          ),
-          body: ScopedModelDescendant<UserModel>(
-            builder: (context, child, model) {
-            return Form(
+        stream: _userModel.outState,
+        builder: (context, snapshot) {
+          switch (snapshot.data) {
+            case LoginStateModel.LOADING:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            case LoginStateModel.IDLE:
+            case LoginStateModel.SUCCESS:
+            case LoginStateModel.FAIL:
+          }
+          return Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBar(
+              title: Text('Diário Saúde'),
+              centerTitle: true,
+              backgroundColor: Color.fromRGBO(0, 91, 161, 1),
+            ),
+            body: ScopedModelDescendant<UserModel>(
+                builder: (context, child, model) {
+              return Form(
                 key: _formKey,
                 child: ListView(
                   padding: EdgeInsets.all(15.0),
@@ -202,8 +204,9 @@ class _HomePageState extends State<HomePage> {
                         if (_formKey.currentState.validate()) {
                           await model.signInWithEmailAndPass(
                               email: _emailController.text,
-                              password: _passController.text
-                          );
+                              password: _passController.text,
+                              onSuccess: onSuccess,
+                              onFailure: onFailure);
                         }
                       },
                     ),
@@ -213,10 +216,15 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               );
-            }
-          ),
-        );
-      }
-    );
+            }),
+          );
+        });
   }
+
+  void onSuccess() {
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => CriarFilho()));
+  }
+
+  void onFailure() {}
 }

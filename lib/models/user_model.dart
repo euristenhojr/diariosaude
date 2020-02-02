@@ -36,6 +36,13 @@ class UserModel extends Model {
     });
   }
 
+  @override
+  void addListener(VoidCallback listener) {
+    super.addListener(listener);
+
+    _loadCurrentUser();
+  }
+
   void signUp(
       {@required Map<String, dynamic> userData,
       @required String pass,
@@ -86,9 +93,7 @@ class UserModel extends Model {
   }
 
   Future<Null> signInGoogle() async {
-    _stateController.add(LoginStateModel.LOADING);
-    notifyListeners();
-    GoogleSignInAccount user = googleSignIn.currentUser;
+    GoogleSignInAccount user = await googleSignIn.signIn();
     if (user == null) {
       user = await googleSignIn.signInSilently();
     }
@@ -146,18 +151,26 @@ class UserModel extends Model {
 
 //email and password
   Future signInWithEmailAndPass(
-      {@required String email, @required String password}) async {
+      {@required String email,
+      @required String password,
+      @required VoidCallback onSuccess,
+      @required VoidCallback onFailure}) async {
     _stateController.add(LoginStateModel.LOADING);
+    isLoading = true;
     notifyListeners();
     await auth
         .signInWithEmailAndPassword(email: email, password: password)
-        .then((auth) {
+        .then((auth) async {
       firebaseUser = auth.user;
+      await _loadCurrentUser();
+
       _stateController.add(LoginStateModel.SUCCESS);
       notifyListeners();
+      onSuccess();
     }).catchError((e) {
       _stateController.add(LoginStateModel.FAIL);
       notifyListeners();
+      onFailure();
     });
   }
 
@@ -172,7 +185,7 @@ class UserModel extends Model {
       firebaseUser = await auth.currentUser();
     }
 
-    if (firebaseUser != null && userData["name"] == null) {
+    if (firebaseUser != null && userData["displayName"] == null) {
       DocumentSnapshot docUser = await Firestore.instance
           .collection("users")
           .document(firebaseUser.uid)

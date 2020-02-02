@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:materno_infantil/models/user_model.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:materno_infantil/ui/criar_filhos.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class TelaCadastrar extends StatefulWidget {
@@ -87,10 +88,12 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
               padding: EdgeInsets.all(16.0),
               children: <Widget>[
                 Container(
-                  width: 70.0,
-                  height: 70.0,
-                  child: Icon(Icons.person_add, size: 100,)
-                ),
+                    width: 70.0,
+                    height: 70.0,
+                    child: Icon(
+                      Icons.person_add,
+                      size: 100,
+                    )),
                 SizedBox(
                   height: 35.0,
                 ),
@@ -236,19 +239,20 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () {
-              if (_formKey.currentState.validate()) {}
-//              Map<String, dynamic> userData = {
-//                "name": _nameController.text,
-//                "email": _emailController.text,
-//                "date_nasc": _dateNasciController.text,
-//                "type_blood": typeBlood
-//              };
-//
-//              model.signUp(
-//                  userData: userData,
-//                  pass: _passController.text,
-//                  onSuccess: _onSuccess,
-//                  onFailure: _onFailure);
+              if (_formKey.currentState.validate()) {
+                Map<String, dynamic> userData = {
+                  "displayName": _nameController.text,
+                  "email": _emailController.text,
+                  "date_nasc": _dateNasciController.text,
+                  "type_blood": typeBlood
+                };
+
+                model.signUp(
+                    userData: userData,
+                    pass: _passController.text,
+                    onSuccess: _onSuccess,
+                    onFailure: _onFailure);
+              }
             },
             child: Icon(Icons.save),
             backgroundColor: Color.fromRGBO(0, 0, 153, 1),
@@ -264,6 +268,9 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
     //   backgroundColor: Theme.of(context).primaryColor,
     //   duration: Duration(seconds: 2),
     // ));
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CriarFilho()));
 
     // Future.delayed(Duration(seconds: 2)).then((_) {
     //   Navigator.of(context)

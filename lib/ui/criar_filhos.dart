@@ -74,16 +74,16 @@ class _State extends State<CriarFilho> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(//model.firebaseUser != null
-                            //? model.firebaseUser.photoUrl
-                             "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
+                        image: NetworkImage(model.userData["photoUrl"] != null
+                            ? model.userData["photoUrl"]
+                            : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                       )),
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
                 Text(
-                  "Olá, ${model.firebaseUser != null ? model.firebaseUser.displayName : ""}",
+                  "Olá, ${model.userData != null ? model.userData["displayName"] : ""}",
                   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                 )
               ])),
@@ -113,8 +113,8 @@ class _State extends State<CriarFilho> {
                         child: TextFormField(
                           controller: _nameController,
                           keyboardType: TextInputType.text,
-                          validator: (name){
-                            if(name.isEmpty){
+                          validator: (name) {
+                            if (name.isEmpty) {
                               return "Digite o nome do Filho(a)!";
                             }
                             return null;
@@ -124,13 +124,13 @@ class _State extends State<CriarFilho> {
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.add),
                                 onPressed: () {
-                                  if(_formKey.currentState.validate()) {
+                                  if (_formKey.currentState.validate()) {
                                     ChildData childData = ChildData();
                                     childData.nome = _nameController.text;
                                     childData.userId = model.firebaseUser.uid;
 
-                                    int tamanho = modelChild.listChildren
-                                        .length;
+                                    int tamanho =
+                                        modelChild.listChildren.length;
 
                                     modelChild.addChildData(childData);
 
