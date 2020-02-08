@@ -185,7 +185,7 @@ class UserModel extends Model {
       firebaseUser = await auth.currentUser();
     }
 
-    if (firebaseUser != null && userData["displayName"] == null) {
+    if (firebaseUser.providerData != null && userData["displayName"] == null) {
       DocumentSnapshot docUser = await Firestore.instance
           .collection("users")
           .document(firebaseUser.uid)

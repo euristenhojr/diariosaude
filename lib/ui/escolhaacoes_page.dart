@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:materno_infantil/datas/child_data.dart';
 import 'package:materno_infantil/models/user_model.dart';
+import 'package:materno_infantil/ui/add_filhos_page.dart';
 import 'package:materno_infantil/ui/evento_calendario.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -155,14 +156,16 @@ class EscolhaAcoes extends StatelessWidget {
                                 color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
                           ),
                         ),
-                        Container(
-                          height: 30.0,
-                          width: 80.0,
+                        FlatButton(
                           padding: EdgeInsets.only(top: 3.0),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) => AddFilhos(childData)));
+                          },
                           child: Text(
                             "Dados Básicos",
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 9.0),
+                            style: TextStyle(fontSize: 12.0),
                           ),
                         ),
                       ],

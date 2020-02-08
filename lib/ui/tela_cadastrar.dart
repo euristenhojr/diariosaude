@@ -270,7 +270,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
     // ));
 
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => CriarFilho()));
+        .pushReplacement(MaterialPageRoute(builder: (context) => CriarFilho()));
 
     // Future.delayed(Duration(seconds: 2)).then((_) {
     //   Navigator.of(context)
