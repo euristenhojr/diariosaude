@@ -47,8 +47,8 @@ class EscolhaAcoes extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(model.userData["photoUrl"] != null
-                            ? model.userData["photoUrl"]
+                        image: NetworkImage(model.firebaseUser != null
+                            ? model.firebaseUser.photoUrl
                             : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                       )),
                 ),
@@ -58,7 +58,7 @@ class EscolhaAcoes extends StatelessWidget {
                 child: Container(
                   height: 17.0,
                   child: Text(
-                    "${model.userData != null ? model.userData["displayName"] : ""}",
+                    "${model.firebaseUser != null ? model.firebaseUser.displayName : ""}",
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -94,9 +94,9 @@ class EscolhaAcoes extends StatelessWidget {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     fit: BoxFit.fill,
-                                    image: NetworkImage(childData.image != null
-                                        ? childData.image
-                                        : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
+                                    image: NetworkImage(//childData.image != null
+                                        //? childData.image
+                                         "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                                   )),
                             ),
                             Padding(
