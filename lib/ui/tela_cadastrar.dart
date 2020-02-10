@@ -107,7 +107,6 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                           size: 20.0,
                         )),
                     validator: (text) {
-                      print(text.isEmpty);
                       if (text.isEmpty) {
                         return "O campo Nome é obrigatório";
                       }
@@ -244,7 +243,9 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                   "displayName": _nameController.text,
                   "email": _emailController.text,
                   "date_nasc": _dateNasciController.text,
-                  "type_blood": typeBlood
+                  "type_blood": typeBlood,
+                  "photoUrl": "http://www.mds.gov.br/webarquivos/arquivo/mds_pra_vc/botoes/Carta_de_Servi%C3%A7o__200x200_CIDADAO.png",
+
                 };
 
                 model.signUp(
