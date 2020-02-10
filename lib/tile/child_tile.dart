@@ -50,7 +50,7 @@ class ChildTile extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Fortaleza",
+                            "${childData.localNasc != null ? childData.localNasc : ""}",
                             style: TextStyle(
                                 fontSize: 16.0,
                                 //SizeConfig.of(context).dynamicScaleSize(size: 18)
