@@ -74,7 +74,7 @@ class _State extends State<CriarFilho> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(model.firebaseUser.photoUrl != null
+                        image: NetworkImage(model.firebaseUser != null
                             ? model.firebaseUser.photoUrl
                             : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                       )),
