@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:materno_infantil/models/child_model.dart';
+import 'package:materno_infantil/models/event_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:materno_infantil/ui/home_page.dart';
@@ -15,15 +16,20 @@ class MyApp extends StatelessWidget {
       child: ScopedModelDescendant<UserModel>(builder: (context, child, model) {
         return ScopedModel<ChildModel>(
           model: ChildModel(model),
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: HomePage(),
-            localizationsDelegates: [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate
-            ],
-            supportedLocales: [const Locale('pt', 'BR')],
-          ),
+          child: ScopedModelDescendant<ChildModel>(builder: (context, child, childModel) {
+            return ScopedModel<EventModel>(
+              model: EventModel(model),
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: HomePage(),
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate
+                ],
+                supportedLocales: [const Locale('pt', 'BR')],
+              ),
+            );
+          }),
         );
       }),
     );
