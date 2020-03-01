@@ -5,7 +5,7 @@ class EventData{
 
   String eid; // id do evento
   String cid; // id do filho
-  String dateEvent;
+  DateTime dateEvent;
   String typeEvent;
   String nameEvent;
   String localeEvent;
@@ -20,9 +20,9 @@ class EventData{
     cid = document.data["cid"];
     nameEvent = document.data["nameEvent"];
     typeEvent = document.data["typeEvent"];
-    dateEvent = document.data["dateEvent"];
+    dateEvent = document.data["dateEvent"].toDate();
     localeEvent = document.data["localeEvent"];
-    descriptionEvent = document.data["DescpritionEvent"];
+    descriptionEvent = document.data["descriptionEvent"];
     image = document.data["image"];
 
   }

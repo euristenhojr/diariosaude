@@ -9,7 +9,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 class CadastrarEvento extends StatefulWidget {
 
-  final String data;
+  final DateTime data;
   final ChildData childData;
   CadastrarEvento(this.data, this.childData);
 
@@ -19,7 +19,7 @@ class CadastrarEvento extends StatefulWidget {
 
 class _CadastrarEventoState extends State<CadastrarEvento> {
 
-  String data;
+  DateTime data;
   final ChildData childData;
   _CadastrarEventoState(this.data, this.childData);
 
@@ -146,7 +146,7 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
                     children: <Widget>[
                       Container(
                         height: 30.0,
-                        child: Text(data, style: TextStyle(
+                        child: Text(format.format(data), style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w500,
                         ),),

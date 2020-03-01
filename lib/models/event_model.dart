@@ -13,11 +13,11 @@ class EventModel extends Model {
 
   List<EventData> listEvents = [];
   List<EventData> listEventsFilter = [];
-  //List<DateTime> date = [];
+  List<DateTime> date = [];
+  Map<DateTime, List<dynamic>> datesEvents = new Map();
   bool isLoading = false;
 
   EventModel(this.user);
-
 
   Future<bool> addEventData(EventData f,) async {
     listEvents.add(f);
@@ -68,14 +68,19 @@ class EventModel extends Model {
   }
 
 
-  void listFilter(String data){
+  void listFilter(DateTime data){
     listEventsFilter = listEvents;
     listEventsFilter = listEventsFilter.where((filter) => filter.dateEvent.compareTo(data) == 0).toList();
   }
-  /*void loadDate(String data){
-      DateTime dateTime = DateTime.parse(data);
-      print(dateTime);
-      date.add(dateTime);
-  }*/
+  void loadDate(){
+    date = listEvents.map((datas) => datas.dateEvent).toList();
+  }
+
+  void loadMap(){
+    datesEvents.clear();
+    for(int i =0; i< date.length; i++){
+      datesEvents[date[i]] = ["select"];
+    }
+  }
 
 }

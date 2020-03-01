@@ -3,7 +3,9 @@ import 'package:materno_infantil/datas/child_data.dart';
 import 'package:materno_infantil/datas/event_data.dart';
 import 'package:materno_infantil/models/child_model.dart';
 import 'package:materno_infantil/models/event_model.dart';
+import 'package:materno_infantil/ui/descricao_event.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:intl/intl.dart';
 
 class EventTile extends StatelessWidget {
 
@@ -11,8 +13,11 @@ class EventTile extends StatelessWidget {
   final ChildData childData;
   EventTile(this.eventData, this.childData);
 
+  final format = DateFormat("dd-MM-yyyy");
+
   @override
   Widget build(BuildContext context) {
+
 
     return Row(
       children: <Widget>[
@@ -47,7 +52,6 @@ class EventTile extends StatelessWidget {
                               "${childData.nome}",
                               style: TextStyle(
                                   fontSize: 18.0,
-                                  //SizeConfig.of(context).dynamicScaleSize(size: 18)
                                   fontWeight: FontWeight.bold
                               ),
                             ),
@@ -55,7 +59,6 @@ class EventTile extends StatelessWidget {
                               "${childData.localNasc != null ? childData.localNasc : ""}",
                               style: TextStyle(
                                   fontSize: 16.0,
-                                  //SizeConfig.of(context).dynamicScaleSize(size: 18)
                                   fontWeight: FontWeight.w500
                               ),
                             ),
@@ -69,23 +72,20 @@ class EventTile extends StatelessWidget {
                               "${eventData.typeEvent}",
                               style: TextStyle(
                                   fontSize: 18.0,
-                                  //SizeConfig.of(context).dynamicScaleSize(size: 18)
                                   fontWeight: FontWeight.bold
                               ),
                             ),
-                            Text(
+                            /*Text(
                               "${eventData.nameEvent}",
                               style: TextStyle(
                                   fontSize: 16.0,
-                                  //SizeConfig.of(context).dynamicScaleSize(size: 18)
                                   fontWeight: FontWeight.bold
                               ),
-                            ),
+                            ),*/
                             Text(
-                              "${eventData.dateEvent}",
+                              "${format.format(eventData.dateEvent)}",
                               style: TextStyle(
                                   fontSize: 16.0,
-                                  //SizeConfig.of(context).dynamicScaleSize(size: 18)
                                   fontWeight: FontWeight.w500
                               ),
                             ),
@@ -111,7 +111,11 @@ class EventTile extends StatelessWidget {
                             IconButton(
                               icon: Icon(Icons.arrow_forward),
                               color: Color.fromARGB(255, 184, 37, 45),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => DescricaoEvento(eventData, childData)
+                                ));
+                              },
                             ),
                           ],
                         )
