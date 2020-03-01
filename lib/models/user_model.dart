@@ -52,7 +52,8 @@ class UserModel extends Model {
     isLoading = true;
     notifyListeners();
 
-    auth.createUserWithEmailAndPassword(
+    auth
+        .createUserWithEmailAndPassword(
             email: userData["email"], password: pass)
         .then((user) async {
       firebaseUser = user.user;
@@ -102,27 +103,40 @@ class UserModel extends Model {
     notifyListeners();
   }
 
-  Future<Null> signInGoogle() async {
-    GoogleSignInAccount user = await googleSignIn.signIn();
-    if (user == null) {
-      user = await googleSignIn.signInSilently();
-    }
-    if (user == null) {
-      user = await googleSignIn.signIn();
-    }
-    GoogleSignInAuthentication credentialsGoogle =
-        await googleSignIn.currentUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: credentialsGoogle.idToken,
-        accessToken: credentialsGoogle.accessToken);
-    await auth.signInWithCredential(credential).then((user) {
-      firebaseUser = user.user;
-      _stateController.add(LoginStateModel.SUCCESS);
+  Future<Null> signInGoogle(
+      VoidCallback _onSuccess, VoidCallback _onFailure) async {
+    try {
+      GoogleSignInAccount user = await googleSignIn.signIn();
+      isLoading = true;
       notifyListeners();
-    }).catchError((e) {
-      _stateController.add(LoginStateModel.FAIL);
+      if (user == null) {
+        user = await googleSignIn.signInSilently();
+      }
+
+      if (user == null) {
+        user = await googleSignIn.signIn();
+      }
+      GoogleSignInAuthentication credentialsGoogle =
+          await googleSignIn.currentUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+          idToken: credentialsGoogle.idToken,
+          accessToken: credentialsGoogle.accessToken);
+
+      final AuthResult authResult =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      print(authResult);
+      final FirebaseUser u = authResult.user;
+      firebaseUser = u;
+
+      _onSuccess();
+      isLoading = false;
       notifyListeners();
-    });
+    } catch (e) {
+      _onFailure();
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future signInFacebook() async {
@@ -132,7 +146,7 @@ class UserModel extends Model {
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-        final FacebookAccessToken accessToken = result.accessToken;
+        // final FacebookAccessToken accessToken = result.accessToken;
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('Login cancelled by the user.');

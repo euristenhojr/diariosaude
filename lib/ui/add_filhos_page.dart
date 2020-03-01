@@ -2,11 +2,9 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:materno_infantil/datas/child_data.dart';
 import 'package:materno_infantil/models/child_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
-import 'package:materno_infantil/ui/evento_calendario.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 

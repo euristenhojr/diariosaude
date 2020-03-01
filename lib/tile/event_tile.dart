@@ -3,7 +3,6 @@ import 'package:materno_infantil/datas/child_data.dart';
 import 'package:materno_infantil/datas/event_data.dart';
 import 'package:materno_infantil/models/child_model.dart';
 import 'package:materno_infantil/models/event_model.dart';
-import 'package:materno_infantil/ui/escolhaacoes_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class EventTile extends StatelessWidget {

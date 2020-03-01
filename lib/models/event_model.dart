@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:materno_infantil/datas/child_data.dart';
 import 'package:materno_infantil/datas/event_data.dart';
 import 'package:materno_infantil/models/user_model.dart';

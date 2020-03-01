@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:materno_infantil/datas/child_data.dart';
-import 'package:materno_infantil/datas/event_data.dart';
 import 'package:materno_infantil/models/event_model.dart';
-import 'package:materno_infantil/models/user_model.dart';
 import 'package:materno_infantil/tile/event_tile.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -32,7 +29,6 @@ class _EventoCalendarioState extends State<EventoCalendario> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     data != null ? data= data : data = format.format(DateTime.now());
     _controller = CalendarController();

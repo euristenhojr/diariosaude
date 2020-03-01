@@ -33,167 +33,171 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           backgroundColor: Color.fromRGBO(0, 91, 161, 1),
         ),
-        body: ScopedModelDescendant<UserModel>(
-            builder: (context, child, model) {
-              if (model.isLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
+        body:
+            ScopedModelDescendant<UserModel>(builder: (context, child, model) {
+          if (model.isLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-              return Form(
-                key: _formKey,
-                child: ListView(
-                  padding: EdgeInsets.all(15.0),
+          return Form(
+            key: _formKey,
+            child: ListView(
+              padding: EdgeInsets.all(15.0),
+              children: <Widget>[
+                Column(
                   children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Icon(
-                          Icons.person_pin,
-                          size: 100.0,
-                        ),
-                        SizedBox(
-                          height: 16.0,
-                        ),
-                        Text(
-                          'Entrar com',
-                          style:
-                          TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 16.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            RaisedButton(
-                              child: Text(
-                                'Google',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              textColor: Colors.white,
-                              color: Color.fromRGBO(221, 75, 57, 1),
-                              onPressed: () async {
-                                await model.signInGoogle();
-                              },
-                            ),
-                            SizedBox(
-                              height: 16.0,
-                            ),
-                            RaisedButton(
-                              child: Text(
-                                'Facebook',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              textColor: Colors.white,
-                              color: Color.fromRGBO(59, 86, 157, 1),
-                              onPressed: () async {
-                                await model.signInFacebook();
-                              },
-                            )
-                          ],
-                        ),
-                      ],
+                    Icon(
+                      Icons.person_pin,
+                      size: 100.0,
                     ),
                     SizedBox(
                       height: 16.0,
                     ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    TextFormField(
-                      controller: _emailController,
-                      validator: (email) {
-                        if (email.isEmpty || !email.contains('@')) {
-                          return 'E-mail inválido';
-                        }
-
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'E-mail',
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    TextFormField(
-                      controller: _passController,
-                      obscureText: true,
-                      validator: (password) {
-                        if (password.isEmpty || password.length < 8) {
-                          return 'Senha inválida';
-                        }
-
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Senha',
-                      ),
+                    Text(
+                      'Entrar com',
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 16.0,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TelaCadastrar()));
+                        RaisedButton(
+                          child: Text(
+                            'Google',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          textColor: Colors.white,
+                          color: Color.fromRGBO(221, 75, 57, 1),
+                          onPressed: () async {
+                            await model.signInGoogle(_onSuccess, _onFailure);
                           },
-                          child: Text(
-                            'Cadastrar',
-                            textAlign: TextAlign.left,
-                          ),
-                          padding: EdgeInsets.zero,
                         ),
-                        FlatButton(
-                          onPressed: () {},
+                        SizedBox(
+                          height: 16.0,
+                        ),
+                        RaisedButton(
                           child: Text(
-                            'Esqueci minha senha',
-                            textAlign: TextAlign.right,
+                            'Facebook',
+                            style: TextStyle(fontSize: 18),
                           ),
-                          padding: EdgeInsets.zero,
+                          textColor: Colors.white,
+                          color: Color.fromRGBO(59, 86, 157, 1),
+                          onPressed: () async {
+                            await model.signInFacebook();
+                          },
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    RaisedButton(
-                      child: Text(
-                        'Entrar',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      textColor: Colors.white,
-                      color: Color.fromRGBO(0, 0, 153, 1),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          await model.signInWithEmailAndPass(
-                              email: _emailController.text,
-                              password: _passController.text,
-                              onSuccess: onSuccess,
-                              onFailure: onFailure);
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
                   ],
                 ),
-              );
-            }
-        ));
+                SizedBox(
+                  height: 16.0,
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  validator: (email) {
+                    if (email.isEmpty || !email.contains('@')) {
+                      return 'E-mail inválido';
+                    }
+
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'E-mail',
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                TextFormField(
+                  controller: _passController,
+                  obscureText: true,
+                  validator: (password) {
+                    if (password.isEmpty || password.length < 8) {
+                      return 'Senha inválida';
+                    }
+
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Senha',
+                  ),
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TelaCadastrar()));
+                      },
+                      child: Text(
+                        'Cadastrar',
+                        textAlign: TextAlign.left,
+                      ),
+                      padding: EdgeInsets.zero,
+                    ),
+                    FlatButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Esqueci minha senha',
+                        textAlign: TextAlign.right,
+                      ),
+                      padding: EdgeInsets.zero,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                RaisedButton(
+                  child: Text(
+                    'Entrar',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  textColor: Colors.white,
+                  color: Color.fromRGBO(0, 0, 153, 1),
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      await model.signInWithEmailAndPass(
+                          email: _emailController.text,
+                          password: _passController.text,
+                          onSuccess: _onSuccess,
+                          onFailure: _onFailure);
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+              ],
+            ),
+          );
+        }));
   }
 
-  void onSuccess() {
+  void _onSuccess() {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => CriarFilho()));
   }
 
-  void onFailure() {}
+  void _onFailure() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("Erro ao salvar informações!"),
+      backgroundColor: Colors.redAccent,
+      duration: Duration(seconds: 2),
+    ));
+  }
 }
