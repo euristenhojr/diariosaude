@@ -32,6 +32,7 @@ class UserModel extends Model {
         notifyListeners();
       } else {
         _stateController.add(LoginStateModel.IDLE);
+        notifyListeners();
       }
     });
   }
@@ -47,23 +48,32 @@ class UserModel extends Model {
       {@required Map<String, dynamic> userData,
       @required String pass,
       @required VoidCallback onSuccess,
-      @required VoidCallback onFailure}) {
+      @required VoidCallback onFailure}) async {
     isLoading = true;
     notifyListeners();
 
-    auth
-        .createUserWithEmailAndPassword(
+    auth.createUserWithEmailAndPassword(
             email: userData["email"], password: pass)
         .then((user) async {
       firebaseUser = user.user;
 
       await _saveUserData(userData);
 
+      UserUpdateInfo updateInfo = UserUpdateInfo();
+      updateInfo.displayName = userData["displayName"];
+      updateInfo.photoUrl = userData["photoUrl"];
+      await firebaseUser.updateProfile(updateInfo);
+      await firebaseUser.reload();
+      firebaseUser = await auth.currentUser();
+
+      _stateController.add(LoginStateModel.SUCCESS);
+
       onSuccess();
 
       isLoading = false;
       notifyListeners();
     }).catchError((e) {
+      _stateController.add(LoginStateModel.FAIL);
       onFailure();
       isLoading = false;
       notifyListeners();
@@ -162,7 +172,7 @@ class UserModel extends Model {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((auth) async {
       firebaseUser = auth.user;
-      await _loadCurrentUser();
+      //await _loadCurrentUser();
 
       _stateController.add(LoginStateModel.SUCCESS);
       notifyListeners();
@@ -185,7 +195,7 @@ class UserModel extends Model {
       firebaseUser = await auth.currentUser();
     }
 
-    if (firebaseUser != null && userData["displayName"] == null) {
+    if (firebaseUser.providerData != null && userData["displayName"] == null) {
       DocumentSnapshot docUser = await Firestore.instance
           .collection("users")
           .document(firebaseUser.uid)

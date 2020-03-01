@@ -1,20 +1,40 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:materno_infantil/datas/child_data.dart';
+import 'package:materno_infantil/datas/event_data.dart';
+import 'package:materno_infantil/models/event_model.dart';
+import 'package:materno_infantil/models/user_model.dart';
+import 'package:materno_infantil/tile/event_tile.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:materno_infantil/ui/cadastrar_evento.dart';
+import 'package:intl/intl.dart';
 
 class EventoCalendario extends StatefulWidget {
+
+  final ChildData childData;
+  EventoCalendario(this.childData);
+
   @override
-  _EventoCalendarioState createState() => _EventoCalendarioState();
+  _EventoCalendarioState createState() => _EventoCalendarioState(childData);
 
 }
 
+
 class _EventoCalendarioState extends State<EventoCalendario> {
+
+  final ChildData childData;
+  _EventoCalendarioState(this.childData);
   CalendarController _controller;
+
+  final format = DateFormat("dd-MM-yyyy");
+  String data;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    data != null ? data= data : data = format.format(DateTime.now());
     _controller = CalendarController();
   }
 
@@ -34,7 +54,7 @@ class _EventoCalendarioState extends State<EventoCalendario> {
         floatingActionButton: FloatingActionButton(
             onPressed: ( ) {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CadastrarEvento()));
+                  MaterialPageRoute(builder: (context) => CadastrarEvento(data, childData)));
             },
             child: Icon(Icons.add),
             backgroundColor: Color.fromARGB(0xFF, 0x1B, 0x30, 0xA1)),
@@ -55,13 +75,6 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                       ),
                       headerStyle: HeaderStyle(
                         centerHeaderTitle: true,
-                        /*formatButtonDecoration: BoxDecoration(
-                      color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                      formatButtonTextStyle: TextStyle(
-                        color: Colors.white
-                      ),*/
                         formatButtonVisible: false,
                         titleTextStyle: TextStyle(fontSize: 14.0),
                       ),
@@ -76,8 +89,8 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                                   shape: BoxShape.circle,
                                 ),
                                 margin: const EdgeInsets.all(2.0),
-                                width: 4,
-                                height: 4,
+                                width: 10,
+                                height: 10,
                               )
                             ];
                           },
@@ -85,277 +98,28 @@ class _EventoCalendarioState extends State<EventoCalendario> {
                       ,
                       initialCalendarFormat: CalendarFormat.month,
                       onDaySelected: (date, events) {
-                        print(date.toIso8601String());
+                        //print(date.toIso8601String());
+                        //print(format.format(date));
+                        data = format.format(date);
                       },
                       calendarController: _controller),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                    color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                    height: 60.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: CircleAvatar(
-                              backgroundImage: ExactAssetImage(
-                                'images/rosto1.jpg',
-                              ),
-                              minRadius: 15.0,
-                              maxRadius: 20.0,
-                            )),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                          child:
-                            Container(
-                              width: 180,
-                              child:
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Filha: Angelina",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),
-                                  Text(
-                                    "  Vacina  ",
-                                    style: TextStyle(color: Colors.white,
-                                        backgroundColor: Colors.teal),
-                                  ),
-                                  Text(
-                                    "Immunite",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            )
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                    color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                    height: 60.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: CircleAvatar(
-                              backgroundImage: ExactAssetImage(
-                                'images/rosto1.jpg',
-                              ),
-                              minRadius: 15.0,
-                              maxRadius: 20.0,
-                            )),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                          child:
-                            Container(
-                              width: 180,
-                                child:
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Filha: Angelina",
-                                      style: TextStyle(
-                                          color: Colors.white),
-                                    ),
-                                    Text(
-                                      " Acompanhamento Médico ",
-                                      style: TextStyle(color: Colors.black,
-                                          backgroundColor: Colors.amber),
-                                    ),
-                                    Text(
-                                      "Fonoaudióloga",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                            )
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: Container(
-                    color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                    height: 60.0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: CircleAvatar(
-                              backgroundImage: ExactAssetImage(
-                                'images/rosto1.jpg',
-                              ),
-                              minRadius: 15.0,
-                              maxRadius: 20.0,
-                            )),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                          child:
-                            Container(
-                              width: 180,
-                              child:
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Filha: Angelina",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),
-                                  Text(
-                                    " Rotina ",
-                                    style: TextStyle(color: Colors.white,
-                                        backgroundColor: Colors.brown),
-                                  ),
-                                  Text(
-                                    "Antibiótico",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            )
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 5.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 5.0),
-                                child: Container(
-                                  height: 5.0,
-                                  width: 5.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                 ScopedModelDescendant<EventModel>(builder: (context, child, modelEvent){
+                    modelEvent.loadEvents(childData);
+                    modelEvent.listFilter(data);
+                    if(modelEvent.listEvents.length == 0){
+                      return Text("");
+                    }
+                    return Column(
+                      children: modelEvent.listEventsFilter.map((event) {
+                        //modelEvent.loadDate(event.dateEvent);
+                        return Card(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 0.0, vertical: 4.0),
+                            child: EventTile(event, childData));
+                      }).toList(),
+                    );
+                  }),
               ],
             ),
           ),
@@ -363,8 +127,8 @@ class _EventoCalendarioState extends State<EventoCalendario> {
   }
 
   final Map<DateTime, List> _selectedDay = {
-    DateTime(2019, 9, 3): ['Selected Day in the calendar!'],
-    DateTime(2019, 9, 5): ['Selected Day in the calendar!'],
+    DateTime(3, 2, 2020): ['Selected Day in the calendar!'],
+    DateTime(2020, 1, 5): ['Selected Day in the calendar!'],
     DateTime(2019, 9, 22): ['Selected Day in the calendar!'],
     DateTime(2019, 9, 22): ['Selected Day in the calendar!'],
     DateTime(2019, 9, 26): ['Selected Day in the calendar!'],

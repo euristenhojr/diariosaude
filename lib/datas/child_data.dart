@@ -7,6 +7,10 @@ class ChildData{
   String nome;
   String userId;
   String image;
+  String dataNasc;
+  String localNasc;
+  double peso;
+  double estatura;
 
 
   ChildData();
@@ -16,6 +20,10 @@ class ChildData{
     nome = document.data["nome"];
     image = document.data["image"];
     userId = document.data["userId"];
+    dataNasc = document.data["dataNasc"];
+    localNasc = document.data["localNasc"];
+    peso = document.data["peso"];
+    estatura = document.data["estatura"];
 
   }
 
@@ -24,6 +32,10 @@ class ChildData{
       "nome": nome,
       "image": image,
       "userId": userId,
+      "dataNasc": dataNasc,
+      "localNasc": localNasc,
+      "peso": peso,
+      "estatura": estatura,
     };
   }
 

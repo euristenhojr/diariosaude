@@ -74,8 +74,8 @@ class _State extends State<CriarFilho> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(model.userData["photoUrl"] != null
-                            ? model.userData["photoUrl"]
+                        image: NetworkImage(model.firebaseUser != null
+                            ? model.firebaseUser.photoUrl
                             : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                       )),
                 ),
@@ -83,7 +83,7 @@ class _State extends State<CriarFilho> {
                   height: 10.0,
                 ),
                 Text(
-                  "Olá, ${model.userData != null ? model.userData["displayName"] : ""}",
+                  "Olá, ${model.firebaseUser != null ? model.firebaseUser.displayName : ""}",
                   style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
                 )
               ])),
@@ -133,6 +133,7 @@ class _State extends State<CriarFilho> {
                                         modelChild.listChildren.length;
 
                                     modelChild.addChildData(childData);
+                                    
 
                                     if (tamanho !=
                                         modelChild.listChildren.length) {

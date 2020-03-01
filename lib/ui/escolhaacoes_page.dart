@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:materno_infantil/datas/child_data.dart';
+import 'package:materno_infantil/models/event_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
+import 'package:materno_infantil/ui/add_filhos_page.dart';
 import 'package:materno_infantil/ui/evento_calendario.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -10,6 +12,7 @@ class EscolhaAcoes extends StatelessWidget {
 
   EscolhaAcoes(this.childData);
 
+  EventModel eventModel;
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
@@ -46,8 +49,8 @@ class EscolhaAcoes extends StatelessWidget {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(model.userData["photoUrl"] != null
-                            ? model.userData["photoUrl"]
+                        image: NetworkImage(model.firebaseUser != null
+                            ? model.firebaseUser.photoUrl
                             : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                       )),
                 ),
@@ -57,7 +60,7 @@ class EscolhaAcoes extends StatelessWidget {
                 child: Container(
                   height: 17.0,
                   child: Text(
-                    "${model.userData != null ? model.userData["displayName"] : ""}",
+                    "${model.firebaseUser != null ? model.firebaseUser.displayName : ""}",
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -155,14 +158,16 @@ class EscolhaAcoes extends StatelessWidget {
                                 color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
                           ),
                         ),
-                        Container(
-                          height: 30.0,
-                          width: 80.0,
+                        FlatButton(
                           padding: EdgeInsets.only(top: 3.0),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) => AddFilhos(childData)));
+                          },
                           child: Text(
                             "Dados Básicos",
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 9.0),
+                            style: TextStyle(fontSize: 12.0),
                           ),
                         ),
                       ],
@@ -175,7 +180,7 @@ class EscolhaAcoes extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EventoCalendario()));
+                                builder: (context) => EventoCalendario(childData)));
                       },
                       child: Column(
                         children: <Widget>[
@@ -205,7 +210,7 @@ class EscolhaAcoes extends StatelessWidget {
                             child: Text(
                               "Vacina",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 9.0),
+                              style: TextStyle(fontSize: 14.0),
                             ),
                           ),
                         ],
