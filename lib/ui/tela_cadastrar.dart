@@ -237,9 +237,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                           child: Text(
                               'Cadastrar', style: TextStyle(fontSize: 18.0)),
                           textColor: Colors.white,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Color.fromRGBO(0, 0, 153, 1),
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
                               Map<String, dynamic> userData = {

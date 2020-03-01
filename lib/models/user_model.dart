@@ -165,20 +165,18 @@ class UserModel extends Model {
       @required String password,
       @required VoidCallback onSuccess,
       @required VoidCallback onFailure}) async {
-    _stateController.add(LoginStateModel.LOADING);
     isLoading = true;
     notifyListeners();
     await auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((auth) async {
       firebaseUser = auth.user;
-      //await _loadCurrentUser();
+      await _loadCurrentUser();
 
-      _stateController.add(LoginStateModel.SUCCESS);
+      isLoading = false;
       notifyListeners();
       onSuccess();
     }).catchError((e) {
-      _stateController.add(LoginStateModel.FAIL);
       notifyListeners();
       onFailure();
     });

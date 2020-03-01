@@ -19,29 +19,6 @@ class _HomePageState extends State<HomePage> {
   final _userModel = UserModel();
 
   @override
-  void initState() {
-    super.initState();
-    _userModel.outState.listen((state) {
-      switch (state) {
-        case LoginStateModel.SUCCESS:
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => CriarFilho()));
-          break;
-        case LoginStateModel.FAIL:
-          showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    title: Text("Erro!"),
-                    content: Text("E-mail ou Senha Incorretos"),
-                  ));
-          break;
-        case LoginStateModel.IDLE:
-        case LoginStateModel.LOADING:
-      }
-    });
-  }
-
-  @override
   void dispose() {
     _userModel.dispose();
     super.dispose();
@@ -49,27 +26,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<LoginStateModel>(
-        stream: _userModel.outState,
-        builder: (context, snapshot) {
-          switch (snapshot.data) {
-            case LoginStateModel.LOADING:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            case LoginStateModel.IDLE:
-            case LoginStateModel.SUCCESS:
-            case LoginStateModel.FAIL:
-          }
-          return Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text('Diário Saúde'),
-              centerTitle: true,
-              backgroundColor: Color.fromRGBO(0, 91, 161, 1),
-            ),
-            body: ScopedModelDescendant<UserModel>(
-                builder: (context, child, model) {
+    return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text('Diário Saúde'),
+          centerTitle: true,
+          backgroundColor: Color.fromRGBO(0, 91, 161, 1),
+        ),
+        body: ScopedModelDescendant<UserModel>(
+            builder: (context, child, model) {
+              if (model.isLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+
               return Form(
                 key: _formKey,
                 child: ListView(
@@ -86,7 +55,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Text(
                           'Entrar com',
-                          style: TextStyle(
+                          style:
+                          TextStyle(
                               fontSize: 20.0, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
@@ -216,9 +186,8 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               );
-            }),
-          );
-        });
+            }
+        ));
   }
 
   void onSuccess() {
