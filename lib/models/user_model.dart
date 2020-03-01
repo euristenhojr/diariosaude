@@ -37,18 +37,18 @@ class UserModel extends Model {
     });
   }
 
-  /*@override
+  @override
   void addListener(VoidCallback listener) {
     super.addListener(listener);
 
     _loadCurrentUser();
-  }*/
+  }
 
   void signUp(
       {@required Map<String, dynamic> userData,
       @required String pass,
       @required VoidCallback onSuccess,
-      @required VoidCallback onFailure}) {
+      @required VoidCallback onFailure}) async {
     isLoading = true;
     notifyListeners();
 
