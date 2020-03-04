@@ -7,19 +7,20 @@ import 'package:scoped_model/scoped_model.dart';
 import 'child_model.dart';
 
 class EventModel extends Model {
-
   UserModel user;
   ChildModel childModel;
 
   List<EventData> listEvents = [];
   List<EventData> listEventsFilter = [];
-  //List<DateTime> date = [];
+  List<DateTime> date = [];
+  Map<DateTime, List<dynamic>> datesEvents = new Map();
   bool isLoading = false;
 
   EventModel(this.user);
 
-
-  Future<bool> addEventData(EventData f,) async {
+  Future<bool> addEventData(
+    EventData f,
+  ) async {
     listEvents.add(f);
 
     await Firestore.instance
@@ -31,14 +32,12 @@ class EventModel extends Model {
         .add(f.toMap())
         .then((doc) {
       f.eid = doc.documentID;
-    }).catchError((e){
+    }).catchError((e) {
       return false;
     });
     notifyListeners();
     return true;
-
   }
-
 
   Future<void> removeEventData(EventData f) async {
     await Firestore.instance
@@ -67,15 +66,21 @@ class EventModel extends Model {
     notifyListeners();
   }
 
-
-  void listFilter(String data){
+  void listFilter(DateTime data) {
     listEventsFilter = listEvents;
-    listEventsFilter = listEventsFilter.where((filter) => filter.dateEvent.compareTo(data) == 0).toList();
+    listEventsFilter = listEventsFilter
+        .where((filter) => filter.dateEvent.compareTo(data) == 0)
+        .toList();
   }
-  /*void loadDate(String data){
-      DateTime dateTime = DateTime.parse(data);
-      print(dateTime);
-      date.add(dateTime);
-  }*/
 
+  void loadDate() {
+    date = listEvents.map((datas) => datas.dateEvent).toList();
+  }
+
+  void loadMap() {
+    datesEvents.clear();
+    for (int i = 0; i < date.length; i++) {
+      datesEvents[date[i]] = ["select"];
+    }
+  }
 }

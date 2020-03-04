@@ -161,8 +161,8 @@ class EscolhaAcoes extends StatelessWidget {
                         FlatButton(
                           padding: EdgeInsets.only(top: 3.0),
                           onPressed: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) => AddFilhos(childData)));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => AddFilhos(childData)));
                           },
                           child: Text(
                             "Dados Básicos",
@@ -180,7 +180,8 @@ class EscolhaAcoes extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => EventoCalendario(childData)));
+                                builder: (context) =>
+                                    EventoCalendario(childData)));
                       },
                       child: Column(
                         children: <Widget>[

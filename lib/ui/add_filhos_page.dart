@@ -7,8 +7,6 @@ import 'package:materno_infantil/models/child_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-
-
 class AddFilhos extends StatelessWidget {
   final ChildData childData;
 
@@ -28,7 +26,7 @@ class AddFilhos extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
       return ScopedModelDescendant<ChildModel>(
-        builder: (context, child, modelChild){
+          builder: (context, child, modelChild) {
         return Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
@@ -48,24 +46,29 @@ class AddFilhos extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
-
-                  childData.peso = double.tryParse(_pesoController.text.replaceAll(",", "."));
-                  childData.estatura = double.tryParse(_estaturaController.text.replaceAll(",", "."));
+                  childData.peso = double.tryParse(
+                      _pesoController.text.replaceAll(",", "."));
+                  childData.estatura = double.tryParse(
+                      _estaturaController.text.replaceAll(",", "."));
                   //tipo Sanguineo
                   childData.dataNasc = _dateNasciController.text;
                   childData.localNasc = _localNasciController.text;
 
                   bool result = await modelChild.updateChildData(childData);
 
-                  if(result){
+                  if (result) {
                     _onSucess();
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _pesoController.clear());
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _estaturaController.clear());
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _tipoSanguineoController.clear());
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _dateNasciController.clear());
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _localNasciController.clear());
+                    WidgetsBinding.instance
+                        .addPostFrameCallback((_) => _pesoController.clear());
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _estaturaController.clear());
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _tipoSanguineoController.clear());
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _dateNasciController.clear());
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _localNasciController.clear());
                   }
-
                 }
               },
               child: Icon(Icons.save),
@@ -131,7 +134,8 @@ class AddFilhos extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
                                       fit: BoxFit.fill,
-                                      image: NetworkImage(childData.image != null
+                                      image: NetworkImage(childData.image !=
+                                              null
                                           ? childData.image
                                           : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                                     )),
@@ -270,5 +274,3 @@ class AddFilhos extends StatelessWidget {
     ));
   }
 }
-
-

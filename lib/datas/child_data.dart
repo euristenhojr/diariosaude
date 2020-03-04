@@ -1,8 +1,6 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ChildData{
-
+class ChildData {
   String cid;
   String nome;
   String userId;
@@ -12,10 +10,9 @@ class ChildData{
   double peso;
   double estatura;
 
-
   ChildData();
 
-  ChildData.fromDocument(DocumentSnapshot document){
+  ChildData.fromDocument(DocumentSnapshot document) {
     cid = document.documentID;
     nome = document.data["nome"];
     image = document.data["image"];
@@ -24,11 +21,10 @@ class ChildData{
     localNasc = document.data["localNasc"];
     peso = document.data["peso"];
     estatura = document.data["estatura"];
-
   }
 
-  Map<String, dynamic> toMap(){
-    return{
+  Map<String, dynamic> toMap() {
+    return {
       "nome": nome,
       "image": image,
       "userId": userId,
@@ -38,5 +34,4 @@ class ChildData{
       "estatura": estatura,
     };
   }
-
 }

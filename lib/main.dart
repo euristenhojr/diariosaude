@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
       child: ScopedModelDescendant<UserModel>(builder: (context, child, model) {
         return ScopedModel<ChildModel>(
           model: ChildModel(model),
-          child: ScopedModelDescendant<ChildModel>(builder: (context, child, childModel) {
+          child: ScopedModelDescendant<ChildModel>(
+              builder: (context, child, childModel) {
             return ScopedModel<EventModel>(
               model: EventModel(model),
               child: MaterialApp(

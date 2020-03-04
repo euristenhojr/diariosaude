@@ -133,7 +133,6 @@ class _State extends State<CriarFilho> {
                                         modelChild.listChildren.length;
 
                                     modelChild.addChildData(childData);
-                                    
 
                                     if (tamanho !=
                                         modelChild.listChildren.length) {

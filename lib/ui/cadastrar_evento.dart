@@ -6,10 +6,8 @@ import 'package:materno_infantil/models/event_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-
 class CadastrarEvento extends StatefulWidget {
-
-  final String data;
+  final DateTime data;
   final ChildData childData;
   CadastrarEvento(this.data, this.childData);
 
@@ -18,8 +16,7 @@ class CadastrarEvento extends StatefulWidget {
 }
 
 class _CadastrarEventoState extends State<CadastrarEvento> {
-
-  String data;
+  DateTime data;
   final ChildData childData;
   _CadastrarEventoState(this.data, this.childData);
 
@@ -32,7 +29,6 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
   String nome = "Cadastrar Evento";
   String eventSelecionado;
   final format = DateFormat("dd-MM-yyyy");
-
 
   List<DropdownMenuItem<String>> listDrop = [];
 
@@ -56,8 +52,9 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
   @override
   Widget build(BuildContext context) {
     loadData();
-    return ScopedModelDescendant<UserModel>(builder: (context, child, model){
-      return ScopedModelDescendant<EventModel>(builder: (context, child, eventModel){
+    return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
+      return ScopedModelDescendant<EventModel>(
+          builder: (context, child, eventModel) {
         return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
@@ -72,7 +69,8 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
             ),
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                if(_formKey.currentState.validate() && eventSelecionado != null){
+                if (_formKey.currentState.validate() &&
+                    eventSelecionado != null) {
                   EventData eventData = EventData();
                   eventData.nameEvent = _nameEventController.text;
                   eventData.typeEvent = eventSelecionado;
@@ -82,13 +80,15 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
                   eventData.cid = childData.cid;
 
                   bool result = await eventModel.addEventData(eventData);
-                  if(result){
+                  if (result) {
                     _onSucess();
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _nameEventController.clear());
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _localeEventController.clear());
-                    WidgetsBinding.instance.addPostFrameCallback((_) => _descriptionEventController.clear());
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _nameEventController.clear());
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _localeEventController.clear());
+                    WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => _descriptionEventController.clear());
                     Navigator.of(context).pop();
-
                   }
                 }
               },
@@ -115,10 +115,10 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
                           Padding(
                               padding: EdgeInsets.only(left: 5.0),
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage(childData.image != null
-                                  ? childData.image
-                                  : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"
-                              ),
+                                backgroundImage: NetworkImage(childData.image !=
+                                        null
+                                    ? childData.image
+                                    : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                                 minRadius: 15.0,
                                 maxRadius: 20.0,
                               )),
@@ -138,140 +138,142 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
                     ),
                   ),
                   Form(
-
                     key: _formKey,
                     child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        height: 30.0,
-                        child: Text(data, style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                        ),),
-                      ),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          value: eventSelecionado,
-                          items: listDrop,
-                          hint: Text(
-                            "Tipo de Evento",
-                            style: TextStyle(fontSize: 14.0),
-                          ),
-                          elevation: 0,
-                          onChanged: (value) {
-                            eventSelecionado = value;
-                            setState(() {});
-                          },
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.black,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 30.0,
+                          child: Text(
+                            format.format(data),
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                      ),
-
-                      Container(
-                          height: 50.0,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: TextFormField(
-                              controller: _nameEventController,
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: eventSelecionado,
+                            items: listDrop,
+                            hint: Text(
+                              "Tipo de Evento",
                               style: TextStyle(fontSize: 14.0),
-                              validator: (name){
-                                if(name.isEmpty) {
-                                  return "O campo Título do Evento é obrigatorio";
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                  hintText: "Título do Evento",
-                                  suffixIcon: Icon(
-                                    Icons.title,
-                                    size: 20.0,
-                                  )),
                             ),
-                          )),
-                      Container(
-                          height: 50.0,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: TextFormField(
-                              controller: _localeEventController,
-                              style: TextStyle(fontSize: 14.0),
-                              validator: (localeEvent){
-                                if(localeEvent.isEmpty) {
-                                  return "O campo Adicionar Local é obrigatorio";
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                  hintText: "Adicionar Local",
-                                  suffixIcon: Icon(
-                                    Icons.location_on,
-                                    size: 20.0,
-                                  )),
-                            ),
-                          )),
-                      Container(
-                          height: 50.0,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            child: TextFormField(
-                              controller: _descriptionEventController,
-                              style: TextStyle(fontSize: 14.0),
-                              validator: (descriptionEvent){
-                                if(descriptionEvent.isEmpty) {
-                                  return "O campo Descrição é obrigatorio";
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                  hintText: "Adicionar uma Descrição",
-                                  suffixIcon: Icon(
-                                    Icons.assignment,
-                                    size: 20.0,
-                                  )),
-                            ),
-                          )),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 20.0),
-                            child: Container(
-                              height: 35,
-                              width: 50,
-                              child: Icon(
-                                Icons.photo_camera,
-                                color: Colors.white,
-                              ),
-                              color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
+                            elevation: 0,
+                            onChanged: (value) {
+                              eventSelecionado = value;
+                              setState(() {});
+                            },
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 20.0, bottom: 5.0, top: 20.0),
-                            child: Container(
-                              height: 35,
-                              width: 50,
-                              child: Icon(
-                                Icons.attach_file,
-                                color: Colors.white,
+                        ),
+                        Container(
+                            height: 50.0,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                              child: TextFormField(
+                                controller: _nameEventController,
+                                style: TextStyle(fontSize: 14.0),
+                                validator: (name) {
+                                  if (name.isEmpty) {
+                                    return "O campo Título do Evento é obrigatorio";
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    hintText: "Título do Evento",
+                                    suffixIcon: Icon(
+                                      Icons.title,
+                                      size: 20.0,
+                                    )),
                               ),
-                              color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
+                            )),
+                        Container(
+                            height: 50.0,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                              child: TextFormField(
+                                controller: _localeEventController,
+                                style: TextStyle(fontSize: 14.0),
+                                validator: (localeEvent) {
+                                  if (localeEvent.isEmpty) {
+                                    return "O campo Adicionar Local é obrigatorio";
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    hintText: "Adicionar Local",
+                                    suffixIcon: Icon(
+                                      Icons.location_on,
+                                      size: 20.0,
+                                    )),
+                              ),
+                            )),
+                        Container(
+                            height: 50.0,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                              child: TextFormField(
+                                controller: _descriptionEventController,
+                                style: TextStyle(fontSize: 14.0),
+                                validator: (descriptionEvent) {
+                                  if (descriptionEvent.isEmpty) {
+                                    return "O campo Descrição é obrigatorio";
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    hintText: "Adicionar uma Descrição",
+                                    suffixIcon: Icon(
+                                      Icons.assignment,
+                                      size: 20.0,
+                                    )),
+                              ),
+                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20.0, bottom: 5.0, top: 20.0),
+                              child: Container(
+                                height: 35,
+                                width: 50,
+                                child: Icon(
+                                  Icons.photo_camera,
+                                  color: Colors.white,
+                                ),
+                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 20.0, bottom: 5.0, top: 20.0),
+                              child: Container(
+                                height: 35,
+                                width: 50,
+                                child: Icon(
+                                  Icons.attach_file,
+                                  color: Colors.white,
+                                ),
+                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            )
-       );});
-      }
-    );
+            ));
+      });
+    });
   }
 
   void _onSucess() {
