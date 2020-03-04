@@ -8,7 +8,6 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:intl/intl.dart';
 
 class EventTile extends StatelessWidget {
-
   final EventData eventData;
   final ChildData childData;
   EventTile(this.eventData, this.childData);
@@ -17,8 +16,6 @@ class EventTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Row(
       children: <Widget>[
         Container(
@@ -39,91 +36,81 @@ class EventTile extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: ScopedModelDescendant<ChildModel>(
                 builder: (context, child, model) {
-                  return ScopedModelDescendant<EventModel>(builder: (context, child, modelEvent){
-                    return Row(
+              return ScopedModelDescendant<EventModel>(
+                  builder: (context, child, modelEvent) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "${childData.nome}",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                            Text(
-                              "${childData.localNasc != null ? childData.localNasc : ""}",
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w500
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "${childData.nome}",
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "${eventData.typeEvent}",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold
-                              ),
-                            ),
-                            /*Text(
+                        Text(
+                          "${childData.localNasc != null ? childData.localNasc : ""}",
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "${eventData.typeEvent}",
+                          style: TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                        /*Text(
                               "${eventData.nameEvent}",
                               style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold
                               ),
                             ),*/
-                            Text(
-                              "${format.format(eventData.dateEvent)}",
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w500
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "${format.format(eventData.dateEvent)}",
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.w500),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(Icons.delete_forever),
-                              color: Color.fromARGB(200, 184, 37, 45),
-                              onPressed: () {
-                                modelEvent.removeEventData(eventData);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.share),
-                              color: Color.fromARGB(255, 184, 37, 45),
-                              onPressed: () {
-
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.arrow_forward),
-                              color: Color.fromARGB(255, 184, 37, 45),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => DescricaoEvento(eventData, childData)
-                                ));
-                              },
-                            ),
-                          ],
-                        )
                       ],
-                    );
-                  });
-                }
-            ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.delete_forever),
+                          color: Color.fromARGB(200, 184, 37, 45),
+                          onPressed: () {
+                            modelEvent.removeEventData(eventData);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.share),
+                          color: Color.fromARGB(255, 184, 37, 45),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_forward),
+                          color: Color.fromARGB(255, 184, 37, 45),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    DescricaoEvento(eventData, childData)));
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              });
+            }),
           ),
         )
       ],

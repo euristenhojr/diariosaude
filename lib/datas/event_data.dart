@@ -1,10 +1,8 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class EventData{
-
-  String eid; // id do evento
-  String cid; // id do filho
+class EventData {
+  String eid;
+  String cid;
   DateTime dateEvent;
   String typeEvent;
   String nameEvent;
@@ -12,10 +10,9 @@ class EventData{
   String descriptionEvent;
   String image;
 
-
   EventData();
 
-  EventData.fromDocument(DocumentSnapshot document){
+  EventData.fromDocument(DocumentSnapshot document) {
     eid = document.documentID;
     cid = document.data["cid"];
     nameEvent = document.data["nameEvent"];
@@ -24,11 +21,10 @@ class EventData{
     localeEvent = document.data["localeEvent"];
     descriptionEvent = document.data["descriptionEvent"];
     image = document.data["image"];
-
   }
 
-  Map<String, dynamic> toMap(){
-    return{
+  Map<String, dynamic> toMap() {
+    return {
       "cid": cid,
       "nameEvent": nameEvent,
       "typeEvent": typeEvent,
@@ -38,5 +34,4 @@ class EventData{
       "image": image,
     };
   }
-
 }

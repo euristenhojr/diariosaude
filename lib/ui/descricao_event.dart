@@ -14,7 +14,8 @@ class DescricaoEvento extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Cadastrar Evento",
+          title: Text(
+            "Cadastrar Evento",
             style: TextStyle(fontSize: 18.0),
           ),
           backgroundColor: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
@@ -42,10 +43,10 @@ class DescricaoEvento extends StatelessWidget {
                           Padding(
                               padding: EdgeInsets.only(left: 5.0),
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage(childData.image != null
+                                backgroundImage: NetworkImage(childData.image !=
+                                        null
                                     ? childData.image
-                                    : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"
-                                ),
+                                    : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
                                 minRadius: 15.0,
                                 maxRadius: 20.0,
                               )),
@@ -68,91 +69,118 @@ class DescricaoEvento extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Text( "Data: ", style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),),
-                      Card(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 4.0),
-                        child: Container(
-                          height: 50.0,
-                          alignment: Alignment.center,
-                          child: Text( format.format(eventData.dateEvent), style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                          ),),
+                      Text(
+                        "Data: ",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text( "Tipo: ", style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),),
                       Card(
                         margin: EdgeInsets.symmetric(
                             horizontal: 0.0, vertical: 4.0),
                         child: Container(
                           height: 50.0,
                           alignment: Alignment.center,
-                          child: Text( eventData.typeEvent, style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                          ),),
-                        ),
-                      ),
-                      Text( "Nome: ", style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),),
-                      Card(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 4.0),
-                        child: Container(
-                          height: 50.0,
-                          alignment: Alignment.center,
-                          child: Text( eventData.nameEvent, style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                          ),),
-                        ),
-                      ),
-                      Text( "Local: ", style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),),
-                      Card(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 4.0),
-                        child: Container(
-                          height: 50.0,
-                          alignment: Alignment.center,
-                          child: Text( eventData.localeEvent, style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
-                          ),),
-                        ),
-                      ),
-                      Text( "Descrição: ", style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w500,
-                      ),),
-                      Card(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: 0.0, vertical: 4.0),
-                        child: Container(
-                          height: 50.0,
-                          alignment: Alignment.center,
-                          child: Text( eventData.descriptionEvent, style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
+                          child: Text(
+                            format.format(eventData.dateEvent),
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
+                        ),
+                      ),
+                      Text(
+                        "Tipo: ",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Card(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 4.0),
+                        child: Container(
+                          height: 50.0,
+                          alignment: Alignment.center,
+                          child: Text(
+                            eventData.typeEvent,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Nome: ",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Card(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 4.0),
+                        child: Container(
+                          height: 50.0,
+                          alignment: Alignment.center,
+                          child: Text(
+                            eventData.nameEvent,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Local: ",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Card(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 4.0),
+                        child: Container(
+                          height: 50.0,
+                          alignment: Alignment.center,
+                          child: Text(
+                            eventData.localeEvent,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        "Descrição: ",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Card(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 0.0, vertical: 4.0),
+                        child: Container(
+                          height: 50.0,
+                          alignment: Alignment.center,
+                          child: Text(
+                            eventData.descriptionEvent,
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                ]   )
-        )
-    );
+                ])));
   }
 }
