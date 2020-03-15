@@ -11,6 +11,9 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 enum LoginStateModel { IDLE, LOADING, SUCCESS, FAIL }
 
 class UserModel extends Model {
+
+  static UserModel of(BuildContext context)=>ScopedModel.of<UserModel>(context);
+
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
   GoogleSignIn googleSignIn = GoogleSignIn();
@@ -192,6 +195,15 @@ class UserModel extends Model {
       onSuccess();
     }).catchError((e) {
       notifyListeners();
+      onFailure();
+    });
+  }
+
+  Future<void> RevoverPass({@required String email, @required VoidCallback onSuccess,
+    @required VoidCallback onFailure}) async {
+    await auth.sendPasswordResetEmail(email: email).then((pass){
+      onSuccess();
+    }).catchError((e){
       onFailure();
     });
   }

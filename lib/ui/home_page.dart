@@ -150,7 +150,9 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.zero,
                     ),
                     FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _onRecover();
+                      },
                       child: Text(
                         'Esqueci minha senha',
                         textAlign: TextAlign.right,
@@ -196,6 +198,46 @@ class _HomePageState extends State<HomePage> {
   void _onFailure() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
       content: Text("Erro ao salvar informações!"),
+      backgroundColor: Colors.redAccent,
+      duration: Duration(seconds: 2),
+    ));
+  }
+
+  void _onRecover(){
+    if(_emailController.text.isEmpty) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text("Insira o E-mail!"),
+        backgroundColor: Colors.redAccent,
+        duration: Duration(seconds: 2),
+      ));
+    }
+    else{
+      if(_emailController.text.contains("@")) {
+        UserModel.of(context).RevoverPass(
+            email: _emailController.text,
+            onSuccess: _onSuccessPass,
+            onFailure: _onFailurePass );
+      }
+      else{
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text("Insira um E-mail válido!"),
+          backgroundColor: Colors.redAccent,
+          duration: Duration(seconds: 2),
+        ));
+      }
+    }
+  }
+
+  void _onSuccessPass(){
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("Recuperação de Senha Enviado para o E-mail!"),
+      backgroundColor: Theme.of(context).primaryColor,
+      duration: Duration(seconds: 2),
+    ));
+  }
+  void _onFailurePass(){
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text("Recuperação de Senha Falhou!"),
       backgroundColor: Colors.redAccent,
       duration: Duration(seconds: 2),
     ));
