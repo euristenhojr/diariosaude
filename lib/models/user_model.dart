@@ -1,41 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-
-enum LoginStateModel { IDLE, LOADING, SUCCESS, FAIL }
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class UserModel extends Model {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Firestore _firestore = Firestore.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
-  GoogleSignIn googleSignIn = GoogleSignIn();
-  static final FacebookLogin facebookLogin = new FacebookLogin();
   Map<String, dynamic> userData = Map();
 
-  bool isLoading = false;
-
-  final _stateController = BehaviorSubject<LoginStateModel>();
-
-  Stream<LoginStateModel> get outState => _stateController.stream;
-  StreamSubscription _streamSubscription;
-
-  UserModel() {
-    _streamSubscription = auth.onAuthStateChanged.listen((user) {
-      if (user != null) {
-        firebaseUser = user;
-        _stateController.add(LoginStateModel.SUCCESS);
-        notifyListeners();
-      } else {
-        _stateController.add(LoginStateModel.IDLE);
-        notifyListeners();
-      }
-    });
-  }
+  bool loading = false;
 
   @override
   void addListener(VoidCallback listener) {
@@ -46,39 +24,158 @@ class UserModel extends Model {
 
   void signUp(
       {@required Map<String, dynamic> userData,
-      @required String pass,
+      @required String password,
       @required VoidCallback onSuccess,
-      @required VoidCallback onFailure}) async {
-    isLoading = true;
+      @required Function onFailure}) async {
+    loading = true;
     notifyListeners();
 
-    auth
-        .createUserWithEmailAndPassword(
-            email: userData["email"], password: pass)
-        .then((user) async {
+    try {
+      QuerySnapshot query = await _firestore
+          .collection("users")
+          .where("email", isEqualTo: userData["email"])
+          .getDocuments();
+
+      if (query.documents.toList().length > 0) {
+        onFailure('Já existe uma conta com esse e-mail!');
+      }
+
+      AuthResult user = await _auth.createUserWithEmailAndPassword(
+          email: userData["email"], password: password);
       firebaseUser = user.user;
 
       await _saveUserData(userData);
 
-      UserUpdateInfo updateInfo = UserUpdateInfo();
-      updateInfo.displayName = userData["displayName"];
-      updateInfo.photoUrl = userData["photoUrl"];
-      await firebaseUser.updateProfile(updateInfo);
-      await firebaseUser.reload();
-      firebaseUser = await auth.currentUser();
+      onSuccess();
+      loading = false;
+      notifyListeners();
+    } catch (e) {
+      onFailure('Erro ao cadastrar seus dados.');
+      loading = false;
+      notifyListeners();
+    }
+  }
 
-      _stateController.add(LoginStateModel.SUCCESS);
+  void signIn(
+      {@required String email,
+      @required String password,
+      @required VoidCallback onSuccess,
+      @required Function onFailure}) async {
+    loading = true;
+    notifyListeners();
+
+    try {
+      AuthResult user = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      firebaseUser = user.user;
+
+      await _loadCurrentUser();
 
       onSuccess();
+      loading = false;
+      notifyListeners();
+    } catch (e) {
+      onFailure(
+          'Falha ao realizar o login. Verifique seus dados!' + e.toString());
+      loading = false;
+      notifyListeners();
+    }
+  }
 
-      isLoading = false;
+  Future<Null> signGoogle(
+      {@required VoidCallback onSuccess, @required Function onFailure}) async {
+    try {
+      final GoogleSignInAccount googleSignInAccount =
+          await _googleSignIn.signIn();
+
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken);
+
+      final AuthResult user = await _auth.signInWithCredential(credential);
+      firebaseUser = user.user;
+
+      QuerySnapshot snapshot = await _firestore
+          .collection("users")
+          .where("email", isEqualTo: googleSignInAccount.email)
+          .getDocuments();
+      if (snapshot.documents.length > 0) {
+        DocumentSnapshot doc = snapshot.documents.first;
+
+        this.userData = doc.data;
+      } else {
+        Map<String, dynamic> userData = {
+          "displayName": googleSignInAccount.displayName,
+          "email": googleSignInAccount.email,
+          "date_nasc": "",
+          "type_blood": "",
+          "photoUrl": googleSignInAccount.photoUrl
+        };
+        this.userData = userData;
+
+        await _firestore
+            .collection("users")
+            .document(firebaseUser.uid)
+            .setData(userData);
+      }
+
+      onSuccess();
+      loading = false;
       notifyListeners();
-    }).catchError((e) {
-      _stateController.add(LoginStateModel.FAIL);
+    } catch (e) {
+      onFailure(e.toString());
+      loading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<Null> signFacebook(
+      {@required VoidCallback onSuccess, @required Function onFailure}) async {
+    loading = true;
+    notifyListeners();
+    try {
+      final facebookLogin = FacebookLogin();
+      final FacebookLoginResult facebookLoginResult =
+          await facebookLogin.logIn(['email']);
+
+      switch (facebookLoginResult.status) {
+        case FacebookLoginStatus.error:
+          onFailure('Erro para logar no facebook!');
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          onFailure('Cancelado pelo usuário!');
+          break;
+        case FacebookLoginStatus.loggedIn:
+          final AuthCredential credential = FacebookAuthProvider.getCredential(
+              accessToken: facebookLoginResult.accessToken.token);
+          final AuthResult user = await _auth.signInWithCredential(credential);
+          firebaseUser = user.user;
+          onSuccess();
+          break;
+      }
+
+      loading = false;
+      notifyListeners();
+    } catch (e) {
       onFailure();
-      isLoading = false;
+      loading = false;
       notifyListeners();
-    });
+    }
+  }
+
+  void recoveryPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
+  void signOut() async {
+    await _auth.signOut();
+    firebaseUser = null;
+    userData = Map();
+
+    notifyListeners();
   }
 
   bool isLoggedIn() {
@@ -88,132 +185,21 @@ class UserModel extends Model {
   Future<Null> _saveUserData(Map<String, dynamic> userData) async {
     this.userData = userData;
 
-    await Firestore.instance
+    await _firestore
         .collection("users")
         .document(firebaseUser.uid)
         .setData(userData);
   }
 
-  void signOut() async {
-    _stateController.add(LoginStateModel.LOADING);
-    await auth.signOut();
-    firebaseUser = null;
-    userData = Map();
-    _stateController.add(LoginStateModel.IDLE);
-    notifyListeners();
-  }
-
-  Future<Null> signInGoogle(
-      VoidCallback _onSuccess, VoidCallback _onFailure) async {
-    try {
-      GoogleSignInAccount user = await googleSignIn.signIn();
-      isLoading = true;
-      notifyListeners();
-      if (user == null) {
-        user = await googleSignIn.signInSilently();
-      }
-
-      if (user == null) {
-        user = await googleSignIn.signIn();
-      }
-      GoogleSignInAuthentication credentialsGoogle =
-          await googleSignIn.currentUser.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-          idToken: credentialsGoogle.idToken,
-          accessToken: credentialsGoogle.accessToken);
-
-      final AuthResult authResult =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      print(authResult);
-      final FirebaseUser u = authResult.user;
-      firebaseUser = u;
-
-      _onSuccess();
-      isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      _onFailure();
-      isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future signInFacebook() async {
-    // _stateController.add(LoginStateModel.LOADING);
-    // notifyListeners();
-    final FacebookLoginResult result = await facebookLogin.logIn(['email']);
-
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        // final FacebookAccessToken accessToken = result.accessToken;
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        print('Login cancelled by the user.');
-        // _showMessage('');
-        break;
-      case FacebookLoginStatus.error:
-        print('Something went wrong with the login process.');
-        // _showMessage('Something went wrong with the login process.\n'
-        // 'Here\'s the error Facebook gave us: ${result.errorMessage}');
-        break;
-    }
-
-    if (result.status == FacebookLoginStatus.loggedIn) {
-      final AuthCredential credential = FacebookAuthProvider.getCredential(
-          accessToken: result.accessToken.token);
-      await auth.signInWithCredential(credential).then((user) {
-        firebaseUser = user.user;
-        _stateController.add(LoginStateModel.SUCCESS);
-        notifyListeners();
-      }).catchError((e) {
-        _stateController.add(LoginStateModel.FAIL);
-        notifyListeners();
-      });
-    }
-  }
-
-//email and password
-  Future signInWithEmailAndPass(
-      {@required String email,
-      @required String password,
-      @required VoidCallback onSuccess,
-      @required VoidCallback onFailure}) async {
-    isLoading = true;
-    notifyListeners();
-    await auth
-        .signInWithEmailAndPassword(email: email, password: password)
-        .then((auth) async {
-      firebaseUser = auth.user;
-      await _loadCurrentUser();
-
-      isLoading = false;
-      notifyListeners();
-      onSuccess();
-    }).catchError((e) {
-      notifyListeners();
-      onFailure();
-    });
-  }
-
-  @override
-  void dispose() {
-    _stateController.close();
-    _streamSubscription.cancel();
-  }
-
   Future<Null> _loadCurrentUser() async {
     if (firebaseUser == null) {
-      firebaseUser = await auth.currentUser();
+      firebaseUser = await _auth.currentUser();
     }
 
-    if (firebaseUser.providerData != null && userData["displayName"] == null) {
-      DocumentSnapshot docUser = await Firestore.instance
-          .collection("users")
-          .document(firebaseUser.uid)
-          .get();
-
-      userData = docUser.data;
+    if (userData["displayName"] == null) {
+      DocumentSnapshot doc =
+          await _firestore.collection("users").document(firebaseUser.uid).get();
+      userData = doc.data;
     }
 
     notifyListeners();

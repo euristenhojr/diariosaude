@@ -75,7 +75,7 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
         backgroundColor: Color.fromRGBO(0, 91, 161, 1),
       ),
       body: ScopedModelDescendant<UserModel>(builder: (context, child, model) {
-        if (model.isLoading) {
+        if (model.loading) {
           return Center(child: CircularProgressIndicator());
         }
 
@@ -209,27 +209,6 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
               SizedBox(
                 height: 16.0,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  FlatButton(
-                    color: Color.fromRGBO(0, 91, 161, 1),
-                    child: Icon(
-                      Icons.photo_camera,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {},
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  FlatButton(
-                    color: Color.fromRGBO(0, 91, 161, 1),
-                    child: Icon(Icons.attach_file, color: Colors.white),
-                    onPressed: () {},
-                  )
-                ],
-              ),
               SizedBox(
                   height: 45.0,
                   child: RaisedButton(
@@ -245,12 +224,12 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
                             "date_nasc": _dateNasciController.text,
                             "type_blood": typeBlood,
                             "photoUrl":
-                                "http://www.mds.gov.br/webarquivos/arquivo/mds_pra_vc/botoes/Carta_de_Servi%C3%A7o__200x200_CIDADAO.png",
+                                "https://cdn1.iconfinder.com/data/icons/business-users/512/circle-512.png",
                           };
 
                           model.signUp(
                               userData: userData,
-                              pass: _passController.text,
+                              password: _passController.text,
                               onSuccess: _onSuccess,
                               onFailure: _onFailure);
                         }
@@ -275,9 +254,9 @@ class _TelaCadastrarState extends State<TelaCadastrar> {
     });
   }
 
-  void _onFailure() {
+  void _onFailure(String message) {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text("Erro ao salvar informações!"),
+      content: Text(message),
       backgroundColor: Colors.redAccent,
       duration: Duration(seconds: 2),
     ));

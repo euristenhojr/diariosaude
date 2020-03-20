@@ -15,31 +15,7 @@ class CriarFilho extends StatefulWidget {
 class _State extends State<CriarFilho> {
   final _nameController = TextEditingController();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _userModel = UserModel();
   final _formKey = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    _userModel.outState.listen((state) {
-      switch (state) {
-        case LoginStateModel.FAIL:
-          break;
-        case LoginStateModel.IDLE:
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => HomePage()));
-          break;
-        case LoginStateModel.LOADING:
-        case LoginStateModel.SUCCESS:
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _userModel.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

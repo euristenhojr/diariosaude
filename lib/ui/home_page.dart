@@ -16,14 +16,6 @@ class _HomePageState extends State<HomePage> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
 
-  final _userModel = UserModel();
-
-  @override
-  void dispose() {
-    _userModel.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         ),
         body:
             ScopedModelDescendant<UserModel>(builder: (context, child, model) {
-          if (model.isLoading) {
+          if (model.loading) {
             return Center(child: CircularProgressIndicator());
           }
 
@@ -72,7 +64,8 @@ class _HomePageState extends State<HomePage> {
                           textColor: Colors.white,
                           color: Color.fromRGBO(221, 75, 57, 1),
                           onPressed: () async {
-                            await model.signInGoogle(_onSuccess, _onFailure);
+                            await model.signGoogle(
+                                onSuccess: _onSuccess, onFailure: _onFailure);
                           },
                         ),
                         SizedBox(
@@ -86,7 +79,8 @@ class _HomePageState extends State<HomePage> {
                           textColor: Colors.white,
                           color: Color.fromRGBO(59, 86, 157, 1),
                           onPressed: () async {
-                            await model.signInFacebook();
+                            await model.signFacebook(
+                                onSuccess: _onSuccess, onFailure: _onFailure);
                           },
                         )
                       ],
@@ -150,7 +144,23 @@ class _HomePageState extends State<HomePage> {
                       padding: EdgeInsets.zero,
                     ),
                     FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_emailController.text.isEmpty) {
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            content:
+                                Text("Digite seu e-mail para recuperar senha."),
+                            backgroundColor: Colors.redAccent,
+                            duration: Duration(seconds: 2),
+                          ));
+                        } else {
+                          model.recoveryPassword(_emailController.text);
+                          _scaffoldKey.currentState.showSnackBar(SnackBar(
+                            content: Text("Confira sua caixa de entrada!"),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 2),
+                          ));
+                        }
+                      },
                       child: Text(
                         'Esqueci minha senha',
                         textAlign: TextAlign.right,
@@ -171,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                   color: Color.fromRGBO(0, 0, 153, 1),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-                      await model.signInWithEmailAndPass(
+                      model.signIn(
                           email: _emailController.text,
                           password: _passController.text,
                           onSuccess: _onSuccess,
@@ -193,9 +203,9 @@ class _HomePageState extends State<HomePage> {
         .pushReplacement(MaterialPageRoute(builder: (context) => CriarFilho()));
   }
 
-  void _onFailure() {
+  void _onFailure(String message) {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text("Erro ao salvar informações!"),
+      content: Text(message),
       backgroundColor: Colors.redAccent,
       duration: Duration(seconds: 2),
     ));
