@@ -39,6 +39,25 @@ class EventModel extends Model {
     return true;
   }
 
+  Future<bool> updateEventData(EventData f) async {
+
+    await Firestore.instance
+        .collection("users")
+        .document(user.firebaseUser.uid)
+        .collection("filhos")
+        .document(f.cid)
+        .collection("eventos")
+        .document(f.eid)
+        .updateData(f.toMap())
+        .then((doc) {
+        print("deu certo");
+    }).catchError((e) {
+      return false;
+    });
+    notifyListeners();
+    return true;
+  }
+
   Future<void> removeEventData(EventData f) async {
     await Firestore.instance
         .collection("users")
@@ -69,7 +88,9 @@ class EventModel extends Model {
   void listFilter(DateTime data) {
     listEventsFilter = listEvents;
     listEventsFilter = listEventsFilter
-        .where((filter) => filter.dateEvent.compareTo(data) == 0)
+        .where((filter) => (filter.dateEvent.month == data.month
+        && filter.dateEvent.day == data.day
+        && filter.dateEvent.year == data.year))
         .toList();
   }
 

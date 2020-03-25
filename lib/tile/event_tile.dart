@@ -4,6 +4,7 @@ import 'package:materno_infantil/datas/event_data.dart';
 import 'package:materno_infantil/models/child_model.dart';
 import 'package:materno_infantil/models/event_model.dart';
 import 'package:materno_infantil/ui/descricao_event.dart';
+import 'package:materno_infantil/ui/editar_evento.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:intl/intl.dart';
 
@@ -92,9 +93,12 @@ class EventTile extends StatelessWidget {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.share),
+                          icon: Icon(Icons.edit),
                           color: Color.fromARGB(255, 184, 37, 45),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => EditarEvento(eventData, childData)));
+                          },
                         ),
                         IconButton(
                           icon: Icon(Icons.arrow_forward),
