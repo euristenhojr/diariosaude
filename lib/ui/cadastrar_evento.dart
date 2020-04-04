@@ -9,16 +9,18 @@ import 'package:scoped_model/scoped_model.dart';
 class CadastrarEvento extends StatefulWidget {
   final DateTime data;
   final ChildData childData;
-  CadastrarEvento(this.data, this.childData);
+  final String escolhaAcao;
+  CadastrarEvento(this.data, this.childData, this.escolhaAcao);
 
   @override
-  _CadastrarEventoState createState() => _CadastrarEventoState(data, childData);
+  _CadastrarEventoState createState() => _CadastrarEventoState(data, childData, escolhaAcao);
 }
 
 class _CadastrarEventoState extends State<CadastrarEvento> {
   DateTime data;
   final ChildData childData;
-  _CadastrarEventoState(this.data, this.childData);
+  final String escolhaAcao;
+  _CadastrarEventoState(this.data, this.childData, this.escolhaAcao);
 
   final _nameEventController = TextEditingController();
   final _localeEventController = TextEditingController();
@@ -50,6 +52,12 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    eventSelecionado = escolhaAcao;
+  }
+
+  @override
   Widget build(BuildContext context) {
     loadData();
     return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
@@ -58,8 +66,7 @@ class _CadastrarEventoState extends State<CadastrarEvento> {
         return Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              title: Text(
-                nome ?? "Cadastrar Evento",
+              title: Text("Cadastrar Evento",
                 style: TextStyle(fontSize: 14.0),
               ),
               backgroundColor: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),

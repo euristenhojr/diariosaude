@@ -9,15 +9,17 @@ import 'package:intl/intl.dart';
 
 class EventoCalendario extends StatefulWidget {
   final ChildData childData;
-  EventoCalendario(this.childData);
+  final String escolhaAcao;
+  EventoCalendario(this.childData, this.escolhaAcao);
 
   @override
-  _EventoCalendarioState createState() => _EventoCalendarioState(childData);
+  _EventoCalendarioState createState() => _EventoCalendarioState(childData, escolhaAcao);
 }
 
 class _EventoCalendarioState extends State<EventoCalendario> {
   final ChildData childData;
-  _EventoCalendarioState(this.childData);
+  final String escolhaAcao;
+  _EventoCalendarioState(this.childData, this.escolhaAcao);
   CalendarController _controller;
 
   final format = DateFormat("dd-MM-yyyy");
@@ -48,7 +50,7 @@ class _EventoCalendarioState extends State<EventoCalendario> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CadastrarEvento(data, childData)));
+                      builder: (context) => CadastrarEvento(data, childData, escolhaAcao)));
             },
             child: Icon(Icons.add),
             backgroundColor: Color.fromARGB(0xFF, 0x1B, 0x30, 0xA1)),

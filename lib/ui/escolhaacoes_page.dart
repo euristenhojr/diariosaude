@@ -181,7 +181,7 @@ class EscolhaAcoes extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    EventoCalendario(childData)));
+                                    EventoCalendario(childData,"vacina")));
                       },
                       child: Column(
                         children: <Widget>[
@@ -225,39 +225,45 @@ class EscolhaAcoes extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 80.0,
-                          width: 80.0,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  style: BorderStyle.solid,
-                                  width: 2.0,
-                                  color:
-                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
-                          child: SizedBox(
-                            width: 14.0,
-                            height: 14.0,
-                            child: Icon(
-                              Icons.assignment,
-                              color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                              size: 50.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => EventoCalendario(childData, "rotina")));
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 80.0,
+                            width: 80.0,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    style: BorderStyle.solid,
+                                    width: 2.0,
+                                    color:
+                                        Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
+                            child: SizedBox(
+                              width: 14.0,
+                              height: 14.0,
+                              child: Icon(
+                                Icons.assignment,
+                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
+                                size: 50.0,
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          height: 30.0,
-                          width: 80.0,
-                          padding: EdgeInsets.only(top: 3.0),
-                          child: Text(
-                            "Rotina",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 9.0),
+                          Container(
+                            height: 30.0,
+                            width: 80.0,
+                            padding: EdgeInsets.only(top: 3.0),
+                            child: Text(
+                              "Rotina",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 14.0),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
