@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:materno_infantil/datas/child_data.dart';
 import 'package:materno_infantil/models/child_model.dart';
+import 'package:materno_infantil/models/vacina_model.dart';
 import 'package:materno_infantil/ui/escolhaacoes_page.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -31,57 +32,64 @@ class ChildTile extends StatelessWidget {
             padding: EdgeInsets.all(8.0),
             child: ScopedModelDescendant<ChildModel>(
                 builder: (context, child, model) {
-              return Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
+              return ScopedModelDescendant<VacinaModel>(
+                builder: (context, child, vacinaModel) {
+                  return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        "${childData.nome}",
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            //SizeConfig.of(context).dynamicScaleSize(size: 18)
-                            fontWeight: FontWeight.bold),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "${childData.nome}",
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                //SizeConfig.of(context).dynamicScaleSize(size: 18)
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "${childData.localNasc != null
+                                ? childData.localNasc
+                                : ""}",
+                            style: TextStyle(
+                                fontSize: 16.0,
+                                //SizeConfig.of(context).dynamicScaleSize(size: 18)
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "${childData.localNasc != null ? childData.localNasc : ""}",
-                        style: TextStyle(
-                            fontSize: 16.0,
-                            //SizeConfig.of(context).dynamicScaleSize(size: 18)
-                            fontWeight: FontWeight.w500),
-                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.delete_forever),
+                            color: Color.fromARGB(200, 184, 37, 45),
+                            onPressed: () {
+                              model.removeChildData(childData);
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.share),
+                            color: Color.fromARGB(255, 184, 37, 45),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.arrow_forward),
+                            color: Color.fromARGB(255, 184, 37, 45),
+                            onPressed: () {
+                              vacinaModel.loadVacina();
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      EscolhaAcoes(childData, vacinaModel.listVacinas)));
+                            },
+                          ),
+                        ],
+                      )
                     ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.delete_forever),
-                        color: Color.fromARGB(200, 184, 37, 45),
-                        onPressed: () {
-                          model.removeChildData(childData);
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.share),
-                        color: Color.fromARGB(255, 184, 37, 45),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.arrow_forward),
-                        color: Color.fromARGB(255, 184, 37, 45),
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => EscolhaAcoes(childData)));
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              );
+                  );
+                });
             }),
           ),
         )

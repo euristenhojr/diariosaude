@@ -1,18 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:materno_infantil/datas/child_data.dart';
+import 'package:materno_infantil/datas/vacina_data.dart';
 import 'package:materno_infantil/models/event_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
+import 'package:materno_infantil/models/vacina_model.dart';
 import 'package:materno_infantil/ui/add_filhos_page.dart';
 import 'package:materno_infantil/ui/evento_calendario.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class EscolhaAcoes extends StatelessWidget {
-  final ChildData childData;
+class EscolhaAcoes extends StatefulWidget {
+  ChildData childData;
+  List<VacinaData> listVacinaData;
+  EscolhaAcoes(this.childData, this.listVacinaData);
 
-  EscolhaAcoes(this.childData);
+  @override
+  _EscolhaAcoesState createState() => _EscolhaAcoesState(childData, listVacinaData);
+}
+
+class _EscolhaAcoesState extends State<EscolhaAcoes> {
+  final ChildData childData;
+  List<VacinaData> listVacinaData;
+  _EscolhaAcoesState(this.childData, this.listVacinaData);
 
   EventModel eventModel;
+  List<VacinaData> vacinas;
+  List<String> nomeVacinas;
+  DateTime dataAtual = DateTime.now();
+  DateTime dataNasc;
+  DateTime idade;
+  String intervalo;
+
+  @override
+  void initState() {
+    super.initState();
+    if(childData.dataNasc != null) {
+
+      dataNasc = _transfomarStringToDate(childData.dataNasc);
+      idade = _transfomarStringToDate(_calculaIdade(dataAtual, dataNasc));
+      intervalo = _intervaloVacina(idade);
+      vacinas = listVacinaData.where((filter) => filter.idade.compareTo(intervalo) == 0).toList();
+      nomeVacinas = vacinas.map((f) => f.nomeVacina).toList();
+
+      if (vacinas.isNotEmpty) {
+        SchedulerBinding.instance.addPostFrameCallback((_) =>
+            showDialog(
+                context: context,
+                builder: (context) =>
+                    AlertDialog(
+                      title: Text(vacinas.length > 1 ? "Vacinas" : "Vacina"),
+                      content: Text("" + nomeVacinas.toString()),
+                    )));
+      }
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
@@ -138,39 +182,44 @@ class EscolhaAcoes extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 80.0,
-                          width: 80.0,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  style: BorderStyle.solid,
-                                  width: 2.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddFilhos(childData)));
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 80.0,
+                            width: 80.0,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    style: BorderStyle.solid,
+                                    width: 2.0,
+                                    color: Color.fromARGB(
+                                        0xFF, 0x08, 0x4D, 0x6E))),
+                            child: SizedBox(
+                              width: 14.0,
+                              height: 14.0,
+                              child: Icon(MdiIcons.accountCardDetails,
+                                  size: 50.0,
                                   color:
-                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
-                          child: SizedBox(
-                            width: 14.0,
-                            height: 14.0,
-                            child: Icon(MdiIcons.accountCardDetails,
-                                size: 50.0,
-                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
+                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
+                            ),
                           ),
-                        ),
-                        FlatButton(
-                          padding: EdgeInsets.only(top: 3.0),
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => AddFilhos(childData)));
-                          },
-                          child: Text(
-                            "Dados Básicos",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 12.0),
+                          Container(
+                            height: 30.0,
+                            width: 80.0,
+                            padding: EdgeInsets.only(top: 3.0),
+                            child: Text(
+                              "Dados Básicos",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 12.0),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
@@ -181,7 +230,7 @@ class EscolhaAcoes extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    EventoCalendario(childData,"vacina")));
+                                    EventoCalendario(childData, "vacina")));
                       },
                       child: Column(
                         children: <Widget>[
@@ -227,8 +276,11 @@ class EscolhaAcoes extends StatelessWidget {
                     padding: EdgeInsets.all(10.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => EventoCalendario(childData, "rotina")));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    EventoCalendario(childData, "rotina")));
                       },
                       child: Column(
                         children: <Widget>[
@@ -240,8 +292,8 @@ class EscolhaAcoes extends StatelessWidget {
                                 border: Border.all(
                                     style: BorderStyle.solid,
                                     width: 2.0,
-                                    color:
-                                        Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
+                                    color: Color.fromARGB(
+                                        0xFF, 0x08, 0x4D, 0x6E))),
                             child: SizedBox(
                               width: 14.0,
                               height: 14.0,
@@ -383,5 +435,87 @@ class EscolhaAcoes extends StatelessWidget {
         ),
       );
     });
+  }
+
+  DateTime _transfomarStringToDate(String data){
+    String dataParse;
+    DateTime date;
+    dataParse = data.substring(6,10);
+    dataParse = dataParse + "-" + data.substring(3,5);
+    dataParse = dataParse + "-" + data.substring(0,2);
+    dataParse = dataParse + " 12:00";
+    date = DateTime.parse(dataParse);
+    return date;
+  }
+
+  String _calculaIdade(DateTime data, DateTime nasc){
+
+    int dia; int ano; int mes;
+    String idade;
+    ano = data.year - nasc.year;
+    mes = data.month - nasc.month;
+
+    if(mes<0){
+      ano = ano -1;
+      mes = 12 + mes;
+    }
+
+    dia = data.day - nasc.day;
+    if(dia<0){
+      mes = mes -1;
+      dia = 30 + dia;
+    }
+    if(dia <= 9){
+       idade = "0" + dia.toString();
+    }else {
+      idade = dia.toString();
+    }
+    if(mes <= 9) {
+      idade = idade + "-0" + mes.toString();
+    }else{
+      idade = idade + "-" + mes.toString();
+    }if(ano<=9){
+      idade = idade + "-000" + ano.toString();
+    }else{
+      idade = idade + "-00" + ano.toString();
+    }
+
+    return idade;
+  }
+
+  String _intervaloVacina(DateTime idade){
+
+    if(idade.year == 0 && idade.month ==0 && idade.day < 10 ){
+      return "00-00-0000";
+    }
+    else if(idade.year == 0 && idade.month == 1 && idade.day < 15){
+      return "00-02-0000";
+    }
+    else if(idade.year == 0 && idade.month == 2 && idade.day < 15){
+      return "00-03-0000";
+    }
+    else if(idade.year == 0 && idade.month == 3 && idade.day < 15){
+      return "00-04-0000";
+    }
+    else if(idade.year == 0 && idade.month == 4 && idade.day < 15){
+      return "00-05-0000";
+    }
+    else if(idade.year == 0 && idade.month == 5 && idade.day < 15){
+      return "00-06-0000";
+    }
+    else if(idade.year == 0 && idade.month == 8 && idade.day < 15){
+      return "00-09-0000";
+    }
+    else if(idade.year == 0 && idade.month == 11 && idade.day < 15){
+      return "00-00-0001";
+    }
+    else if(idade.year == 1 && idade.month == 3 && idade.day < 15){
+      return "00-03-0001";
+    }
+    else if(idade.year == 3 && idade.month == 11 && idade.day < 15){
+      return "00-00-0004";
+    }
+
+    return "00-00-0100";
   }
 }

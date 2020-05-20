@@ -71,8 +71,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           textColor: Colors.white,
                           color: Color.fromRGBO(221, 75, 57, 1),
-                          onPressed: () async {
-                            await model.signInGoogle(_onSuccess, _onFailure);
+                          onPressed: () {
+                            model.signInGoogle(_onSuccess, _onFailure);
                           },
                         ),
                         SizedBox(
@@ -85,8 +85,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           textColor: Colors.white,
                           color: Color.fromRGBO(59, 86, 157, 1),
-                          onPressed: () async {
-                            await model.signInFacebook();
+                          onPressed: () {
+                            model.signInFacebook();
                           },
                         )
                       ],
@@ -171,9 +171,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                   textColor: Colors.white,
                   color: Color.fromRGBO(0, 0, 153, 1),
-                  onPressed: () async {
+                  onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      await model.signInWithEmailAndPass(
+                      model.signInWithEmailAndPass(
                           email: _emailController.text,
                           password: _passController.text,
                           onSuccess: _onSuccess,
