@@ -7,6 +7,7 @@ class ChildData {
   String image;
   String dataNasc;
   String localNasc;
+  String tipoSangue;
   double peso;
   double estatura;
 
@@ -19,6 +20,7 @@ class ChildData {
     userId = document.data["userId"];
     dataNasc = document.data["dataNasc"];
     localNasc = document.data["localNasc"];
+    tipoSangue = document.data["tipoSangue"];
     peso = document.data["peso"];
     estatura = document.data["estatura"];
   }
@@ -30,6 +32,7 @@ class ChildData {
       "userId": userId,
       "dataNasc": dataNasc,
       "localNasc": localNasc,
+      "tipoSangue": tipoSangue,
       "peso": peso,
       "estatura": estatura,
     };
