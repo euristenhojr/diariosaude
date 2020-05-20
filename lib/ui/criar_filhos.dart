@@ -76,7 +76,7 @@ class _State extends State<CriarFilho> {
                         fit: BoxFit.fill,
                         image: NetworkImage(model.firebaseUser != null
                             ? model.firebaseUser.photoUrl
-                            : "https://www.maxfesta.com.br/imagens/produtos/28740/Detalhes/tnt-azul-marinho-metro.jpg"),
+                            : "https://cdn.pixabay.com/photo/2016/02/04/13/49/the-earth-1179212_960_720.png"),
                       )),
                 ),
                 SizedBox(
