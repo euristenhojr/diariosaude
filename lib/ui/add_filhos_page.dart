@@ -7,10 +7,18 @@ import 'package:materno_infantil/models/child_model.dart';
 import 'package:materno_infantil/models/user_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class AddFilhos extends StatelessWidget {
-  final ChildData childData;
-
+class AddFilhos extends StatefulWidget {
+  ChildData childData;
   AddFilhos(this.childData);
+  @override
+  _AddFilhosState createState() => _AddFilhosState(childData);
+}
+
+class _AddFilhosState extends State<AddFilhos> {
+
+  ChildData childData;
+
+  _AddFilhosState(this.childData);
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
@@ -21,6 +29,18 @@ class AddFilhos extends StatelessWidget {
   final _localNasciController = TextEditingController();
 
   final format = DateFormat("dd-MM-yyyy");
+
+  @override
+  void initState() {
+    super.initState();
+    if(childData.estatura != null){
+      _pesoController.text = childData.peso.toString();
+      _estaturaController.text = childData.estatura.toString();
+      _tipoSanguineoController.text = childData.tipoSangue;
+      _dateNasciController.text = childData.dataNasc;
+      _localNasciController.text = childData.localNasc;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +70,7 @@ class AddFilhos extends StatelessWidget {
                       _pesoController.text.replaceAll(",", "."));
                   childData.estatura = double.tryParse(
                       _estaturaController.text.replaceAll(",", "."));
-                  //tipo Sanguineo
+                  childData.tipoSangue = _tipoSanguineoController.text;
                   childData.dataNasc = _dateNasciController.text;
                   childData.localNasc = _localNasciController.text;
 
@@ -233,7 +253,7 @@ class AddFilhos extends StatelessWidget {
                           return showDatePicker(
                             context: context,
                             firstDate: DateTime(1900),
-                            initialDate: currentValue ?? DateTime.now(),
+                            initialDate: currentValue ?? childData.dataNasc,
                             lastDate: DateTime(2100),
                           );
                         },
@@ -272,5 +292,14 @@ class AddFilhos extends StatelessWidget {
       backgroundColor: Colors.green,
       duration: Duration(seconds: 1),
     ));
+    Future.delayed(Duration(seconds: 2)).then((_) {
+      Navigator.of(context).pop();
+    });
   }
+
+  void _onFailure(){
+
+  }
+
+
 }
