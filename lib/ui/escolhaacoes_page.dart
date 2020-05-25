@@ -8,6 +8,7 @@ import 'package:materno_infantil/models/user_model.dart';
 import 'package:materno_infantil/models/vacina_model.dart';
 import 'package:materno_infantil/ui/add_filhos_page.dart';
 import 'package:materno_infantil/ui/evento_calendario.dart';
+import 'package:materno_infantil/widgets/opcoes.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class EscolhaAcoes extends StatefulWidget {
@@ -187,39 +188,7 @@ class _EscolhaAcoesState extends State<EscolhaAcoes> {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => AddFilhos(childData)));
                       },
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 80.0,
-                            width: 80.0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    style: BorderStyle.solid,
-                                    width: 2.0,
-                                    color: Color.fromARGB(
-                                        0xFF, 0x08, 0x4D, 0x6E))),
-                            child: SizedBox(
-                              width: 14.0,
-                              height: 14.0,
-                              child: Icon(MdiIcons.accountCardDetails,
-                                  size: 50.0,
-                                  color:
-                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
-                            ),
-                          ),
-                          Container(
-                            height: 30.0,
-                            width: 80.0,
-                            padding: EdgeInsets.only(top: 3.0),
-                            child: Text(
-                              "Dados Básicos",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 12.0),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: Opcoes(MdiIcons.accountCardDetails, "Dados Básicos", 12.0),
                     ),
                   ),
                   Padding(
@@ -232,39 +201,7 @@ class _EscolhaAcoesState extends State<EscolhaAcoes> {
                                 builder: (context) =>
                                     EventoCalendario(childData, "vacina")));
                       },
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 80.0,
-                            width: 80.0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    style: BorderStyle.solid,
-                                    width: 2.0,
-                                    color: Color.fromARGB(
-                                        0xFF, 0x08, 0x4D, 0x6E))),
-                            child: SizedBox(
-                              width: 14.0,
-                              height: 14.0,
-                              child: Icon(MdiIcons.heartPulse,
-                                  size: 50.0,
-                                  color:
-                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
-                            ),
-                          ),
-                          Container(
-                            height: 30.0,
-                            width: 80.0,
-                            padding: EdgeInsets.only(top: 3.0),
-                            child: Text(
-                              "Vacina",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 14.0),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: Opcoes(MdiIcons.heartPulse, "Vacina", 14.0),
                     ),
                   ),
                 ],
@@ -282,76 +219,12 @@ class _EscolhaAcoesState extends State<EscolhaAcoes> {
                                 builder: (context) =>
                                     EventoCalendario(childData, "rotina")));
                       },
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 80.0,
-                            width: 80.0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    style: BorderStyle.solid,
-                                    width: 2.0,
-                                    color: Color.fromARGB(
-                                        0xFF, 0x08, 0x4D, 0x6E))),
-                            child: SizedBox(
-                              width: 14.0,
-                              height: 14.0,
-                              child: Icon(
-                                Icons.assignment,
-                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E),
-                                size: 50.0,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 30.0,
-                            width: 80.0,
-                            padding: EdgeInsets.only(top: 3.0),
-                            child: Text(
-                              "Rotina",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 14.0),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: Opcoes(Icons.assignment, "Rotina", 14.0),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 80.0,
-                          width: 80.0,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  style: BorderStyle.solid,
-                                  width: 2.0,
-                                  color:
-                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
-                          child: SizedBox(
-                            width: 14.0,
-                            height: 14.0,
-                            child: Icon(MdiIcons.accountPlusOutline,
-                                size: 50.0,
-                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
-                          ),
-                        ),
-                        Container(
-                          height: 30.0,
-                          width: 80.0,
-                          padding: EdgeInsets.only(top: 3.0),
-                          child: Text(
-                            "Crescimento",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 9.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: Opcoes(MdiIcons.accountPlusOutline, "Crescimento", 14.0),
                   ),
                 ],
               ),
@@ -360,73 +233,11 @@ class _EscolhaAcoesState extends State<EscolhaAcoes> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 80.0,
-                          width: 80.0,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  style: BorderStyle.solid,
-                                  width: 2.0,
-                                  color:
-                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
-                          child: SizedBox(
-                            width: 14.0,
-                            height: 14.0,
-                            child: Icon(MdiIcons.heart,
-                                size: 50.0,
-                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
-                          ),
-                        ),
-                        Container(
-                          height: 30.0,
-                          width: 80.0,
-                          padding: EdgeInsets.only(top: 3.0),
-                          child: Text(
-                            "Acompanhamento Médico",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 9.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: Opcoes(MdiIcons.heart, "Médico", 14.0),
                   ),
                   Padding(
                     padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: 80.0,
-                          width: 80.0,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  style: BorderStyle.solid,
-                                  width: 2.0,
-                                  color:
-                                      Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E))),
-                          child: SizedBox(
-                            width: 14.0,
-                            height: 14.0,
-                            child: Icon(MdiIcons.accountChildCircle,
-                                size: 50.0,
-                                color: Color.fromARGB(0xFF, 0x08, 0x4D, 0x6E)),
-                          ),
-                        ),
-                        Container(
-                          height: 30.0,
-                          width: 80.0,
-                          padding: EdgeInsets.only(top: 3.0),
-                          child: Text(
-                            "Relatórios",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 9.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: Opcoes(MdiIcons.accountChildCircle, "Relatórios", 14.0),
                   ),
                 ],
               )
@@ -452,15 +263,15 @@ class _EscolhaAcoesState extends State<EscolhaAcoes> {
 
     int dia; int ano; int mes;
     String idade;
+
     ano = data.year - nasc.year;
     mes = data.month - nasc.month;
+    dia = data.day - nasc.day;
 
     if(mes<0){
       ano = ano -1;
       mes = 12 + mes;
     }
-
-    dia = data.day - nasc.day;
     if(dia<0){
       mes = mes -1;
       dia = 30 + dia;

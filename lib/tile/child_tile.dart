@@ -80,9 +80,12 @@ class ChildTile extends StatelessWidget {
                             color: Color.fromARGB(255, 184, 37, 45),
                             onPressed: () {
                               vacinaModel.loadVacina();
+                              Future.delayed(Duration(seconds: 1)).then((_) {
+
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
                                       EscolhaAcoes(childData, vacinaModel.listVacinas)));
+                              });
                             },
                           ),
                         ],
