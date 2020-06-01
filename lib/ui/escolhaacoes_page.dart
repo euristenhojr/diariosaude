@@ -268,19 +268,20 @@ class _EscolhaAcoesState extends State<EscolhaAcoes> {
     mes = data.month - nasc.month;
     dia = data.day - nasc.day;
 
-    if(mes<0){
-      ano = ano -1;
-      mes = 12 + mes;
-    }
     if(dia<0){
       mes = mes -1;
       dia = 30 + dia;
+    }
+    if(mes<0){
+      ano = ano -1;
+      mes = 12 + mes;
     }
     if(dia <= 9){
        idade = "0" + dia.toString();
     }else {
       idade = dia.toString();
     }
+
     if(mes <= 9) {
       idade = idade + "-0" + mes.toString();
     }else{
